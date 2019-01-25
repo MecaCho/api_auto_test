@@ -11,10 +11,14 @@ from common.req import _request
 
 if __name__ == '__main__':
     test_fun()
+    import sys,getpass
+    usr = sys.argv[1]
+
+    pwd = getpass.getpass()
     # client = Base(project_id="", url="www.baidu.com", token="", port="")
     _request(method="get", path="http://www.baidu.com")
     client = node.Node(
-            usr="", pwd="~", project_id="988a1af23ff942879d4844f233ba7b23",
+            usr=usr, pwd=pwd, project_id="988a1af23ff942879d4844f233ba7b23",
             url="ief2.cn-north-1.myhuaweicloud.com", api_version="v2")
     client.list_nodes()
 
