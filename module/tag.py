@@ -17,7 +17,7 @@ TOTAL_TIME = 0
 class TAG(BASE):
     
     def __init__(self, project_id, url, api_version, pwd, usr):
-        super(TAG, self).__init__()
+        super(TAG, self).__init__(project_id, url, api_version, pwd, usr)
         self.project_id = project_id
         self.url = url
         # self.port = port

@@ -1,6 +1,7 @@
 from log.log import return_api_resp
 from module import tag, node
-
+import json
+import os
 
 @return_api_resp()
 def test_fun():
@@ -8,20 +9,28 @@ def test_fun():
 
 from common.req import _request
 
+def read_config():
+    print os.path.abspath(__file__)
+    file_c = os.getcwd() + "/config/configmap.json"
+    with open(file_c) as fp:
+        conf_dict = json.load(fp)
+        return conf_dict
 
 if __name__ == '__main__':
-    test_fun()
+    regions = read_config()
     import sys,getpass
     usr = sys.argv[1]
-
     pwd = getpass.getpass()
-    # client = Base(project_id="", url="www.baidu.com", token="", port="")
-    _request(method="get", path="http://www.baidu.com")
+    regions = read_config()
+    region = regions[0]
+    project_id = region["project_id"]
+    url = region["ief_url"]
+    api_version = region["api_version"]
     client = node.Node(
-            usr=usr, pwd=pwd, project_id="988a1af23ff942879d4844f233ba7b23",
-            url="ief2.cn-north-1.myhuaweicloud.com", api_version="v2")
+            usr=usr, pwd=pwd, project_id=project_id,
+            url=url, api_version=api_version)
     client.list_nodes()
 
-    client = tag.TAG(usr="", pwd="", project_id="", url="ief2.cn-north-1.myhuaweicloud.com", api_version="v2")
+    client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
     client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
 
