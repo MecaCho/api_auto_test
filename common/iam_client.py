@@ -20,7 +20,8 @@ class Client_(object):
         self.headers = {"Content-Type": "application/json"}
 
     def get_service_token(self):
-	token_file = self.usr+".json"
+	file_path = os.path.dirname(os.path.abspath(__file__))
+	token_file = file_path+"/"+self.usr+".cert"
 	if os.path.exists(token_file):
 		with open(token_file, "r") as fp:
 			try:

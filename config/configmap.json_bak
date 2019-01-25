@@ -1,0 +1,17 @@
+[
+    {
+        "ief_url":"ief2.cn-north-1.myhuaweicloud.com",
+        "api_version":"v2",
+        "project_id":"988a1af23ff942879d4844f233ba7b23"
+    },
+    {
+        "ief_url":"ief2.cn-east-2.myhuaweicloud.com",
+        "api_version":"v2",
+        "project_id":"42f7e2d36787473a90979d4d5a0a57bb"
+    },
+    {
+        "ief_url":"ief2.cn-east-2.myhuaweicloud.com",
+        "api_version":"v2",
+        "project_id":"42f7e2d36787473a90979d4d5a0a57bb"
+    }
+]
