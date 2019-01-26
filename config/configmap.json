@@ -1,21 +1,22 @@
 [
-    "user": "qiuwenqi",
-    "regions": [
     {
-        "ief_url":"ief2.cn-north-1.myhuaweicloud.com",
-        "api_version":"v2",
-        "project_id":"988a1af23ff942879d4844f233ba7b23"
-    },
-    {
-        "ief_url":"ief2.cn-east-2.myhuaweicloud.com",
-        "api_version":"v2",
-        "project_id":"3476584924274cce8ab479e5b4b68bbc"
-    },
-    {
-        "ief_url":"ief2.cn-south-1.myhuaweicloud.com",
-        "api_version":"v2",
-        "project_id":"5f5ee5f0463046ecad0930cdb3d4fd7d"
+        "user":"qiuwenqi",
+        "regions":[
+            {
+                "ief_url":"ief2.cn-north-1.myhuaweicloud.com",
+                "api_version":"v2",
+                "project_id":"988a1af23ff942879d4844f233ba7b23"
+            },
+            {
+                "ief_url":"ief2.cn-east-2.myhuaweicloud.com",
+                "api_version":"v2",
+                "project_id":"3476584924274cce8ab479e5b4b68bbc"
+            },
+            {
+                "ief_url":"ief2.cn-south-1.myhuaweicloud.com",
+                "api_version":"v2",
+                "project_id":"5f5ee5f0463046ecad0930cdb3d4fd7d"
+            }
+        ]
     }
-    ]
 ]
-

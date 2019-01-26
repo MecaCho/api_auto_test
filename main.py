@@ -19,10 +19,9 @@ def read_config():
 if __name__ == '__main__':
     regions = read_config()
     import sys,getpass
-    usr = sys.argv[1]
-    pwd = getpass.getpass()
     users = read_config()
     usr = users[0].get("user")
+    pwd = getpass.getpass("please input user {} password : ".format(usr))
     regions = users[0].get("regions")
     region = regions[0]
     project_id = region["project_id"]
