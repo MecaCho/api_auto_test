@@ -21,7 +21,9 @@ if __name__ == '__main__':
     import sys,getpass
     usr = sys.argv[1]
     pwd = getpass.getpass()
-    regions = read_config()
+    users = read_config()
+    usr = users[0].get("user")
+    regions = users[0].get("regions")
     region = regions[0]
     project_id = region["project_id"]
     url = region["ief_url"]
