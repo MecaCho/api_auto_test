@@ -28,7 +28,7 @@ def _request(path, method, body=None, headers=None):
         ret = requests.put(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "delete":
         ret = requests.delete(path, headers=headers, verify=False, timeout=5, data=None)
-    print ret.__dict__
+    LOG.debug("Request response result : {}".format(json.dumps(ret.__dict__)))
     code, body = ret.status_code, ret.content
     LOG.info("Request resp code: {0}, body : {1}".format(code, body))    
     return ret
