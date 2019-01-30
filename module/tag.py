@@ -54,10 +54,30 @@ class TAG(BASE):
         path = self.url_add_tag.format(
                 project_id=self.project_id, resource_type=resource_type, resource_id=resource_id)
         ret = self.req(method="post", path=path, body=data_post)
-        return ret.status_code, json.loads(ret.content)
+        return ret.status_code, json.loads(ret.content) if ret.content else ""
+
+    def delete_tag(self, resource_type, resource_id, key):
+        path = self.url_del_tag.format(
+                project_id=self.project_id, resource_type=resource_type, resource_id=resource_id, key=key)
+        ret = self.req(method="delete", path=path, body=None)
+        return ret.status_code, json.loads(ret.content) if ret.content else ""
+
+    def init_tag(self, resource_type):
+        res_type = self.get_res_type(resource_type)
+        code, nodes = self.list_ress(resource_type=res_type)
+        assert code == 200
+        for node in nodes["nodes"]:
+            node_id = node["id"]
+            code, tags = self.get_tags_of_resource(resource_type=resource_type, resource_id=node_id)
+            assert code == 200
+            for tag in tags["tags"]:
+                key = tag["key"]
+                code, resp = self.delete_tag(resource_type=resource_type, resource_id=node_id, key=key)
+                assert code == 204
 
     def test_query_ins(self):
         try:
+            self.init_tag(resource_type="edge_node")
             for action in ["filter", "count"]:
                 # TC_TMS_QuerryResourceInstanceFilter_001	请求体中带所有必选参数，查询实例成功
                 code, response = self.query_ins("edge_node", action, [{"key": "key0", "values": ["value0"]}])
@@ -436,6 +456,7 @@ class TAG(BASE):
             print traceback.print_exc()
 
     def test_batch_tags(self):
+        self.init_tag(resource_type="edge_node")
         try:
             code, node = self.list_ress(resource_type="nodes")
             assert code == 200

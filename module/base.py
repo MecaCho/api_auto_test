@@ -10,6 +10,7 @@ NODE = "/{project_id}/edgemgr/nodes/{node_id}"
 
 QUERY_INS = "/{project_id}/ief-{resource_type}/resource_instances/action"
 ADD_TAG = "/{project_id}/ief-{resource_type}/{resource_id}/tags"
+DEL_TAG = "/{project_id}/ief-{resource_type}/{resource_id}/tags/{key}"
 ADD_TAGS = "/{project_id}/ief-{resource_type}/{resource_id}/tags/action"
 RESS_TAGS = "/{project_id}/ief-{resource_type}/tags"
 RES_URL = "/{project_id}/edgemgr/{resource_type}"
@@ -33,6 +34,11 @@ class BASE(object):
         self.url_ress_tags = RESS_TAGS
         self.url_batch_tags = ADD_TAGS
         self.url_res = RES_URL
+        self.url_del_tag = DEL_TAG
+
+    def get_res_type(self, resource_type):
+        res_dict = {"edge_node": "nodes"}
+        return res_dict[resource_type]
 
     def get_token(self):
         iam = iam_client.Client_(usr=self.usr, pwd=self.pwd, project_id=self.project_id)
