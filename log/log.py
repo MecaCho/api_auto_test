@@ -47,6 +47,7 @@ def return_api_resp(*args, **kwargs):
                 LOG.info("Cost time : {0}s, start at :{1}".format(cost_time, time.ctime(time_satrt)))
             except Exception as e:
                 LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
+                raise e
             return resp
         return wrapper
     return catch_api_error
