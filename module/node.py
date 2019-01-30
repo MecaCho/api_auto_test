@@ -4,6 +4,7 @@ import json
 import time
 from base import BASE
 from common.req import common_request
+from log.log import assert_resp
 
 
 class Node(BASE):
@@ -16,8 +17,10 @@ class Node(BASE):
         self.pwd = pwd
         self.usr = usr
 
+    @assert_resp(True, expection_code=200)
     def list_nodes(self):
         path = self.url_nodes.format(project_id=self.project_id)
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
+
 

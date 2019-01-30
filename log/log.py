@@ -25,6 +25,34 @@ def method_decorator(func):
     return wrapper
 
 
+def assert_resp(*args, **kwargs):
+    expection_code = kwargs.get("expection_code", None)
+    partion = args[0] if args[0] else None
+
+    def catch_resp(func):
+        def wrapper(*args, **kwargs):
+            resp = func(*args, **kwargs)
+            code = ""
+            ret = ""
+            try:
+                if not partion:
+                    code = resp.status_code
+                    assert code == expection_code
+                else:
+                    code, _ = resp
+                    assert code == expection_code
+                ret = "Success"
+            except Exception as err:
+                ret = "Failed"
+                LOG.error("Check test result failed : {}".format(str(err)))
+            LOG.info("Expection response code : {}, Real response code :{}, Test Result:{}".format(
+                    expection_code, code, ret
+            ))
+            return resp
+        return wrapper
+    return catch_resp
+
+
 def return_api_resp(*args, **kwargs):
     to_type = kwargs.get("to_type", None)
 
