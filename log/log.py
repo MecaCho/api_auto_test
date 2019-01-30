@@ -40,7 +40,7 @@ def return_api_resp(*args, **kwargs):
                 if kwargs.get("headers"):
                     if kwargs.get("headers").get("X-Auth-Token"):
                         kwargs["headers"].pop("X-Auth-Token")
-                        LOG.info(
+                        LOG.debug(
                                 "Func name : {2} , args: {0}, kwargs : {1}".format(args,
                                                                                    json.dumps(kwargs),
                                                                                    func.__name__))
@@ -52,9 +52,11 @@ def return_api_resp(*args, **kwargs):
                         log_dict["resp_code"], _ = resp
                     else:
                         try:
-                            log_dict["resp_code"] = resp.code
+                            log_dict["resp_code"] = str(resp.status_code)
                         except Exception:
                             log_dict["resp_code"] = resp
+                else:
+                    log_dict["resp_code"] = ""
                 LOG.info(
                         "Func method: {method}, path :{path}, resp: {resp_code}, "
                         "cost time : {cost}s, start at :{st_time}".format(

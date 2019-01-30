@@ -23,7 +23,7 @@ def common_request(path, method, body=None, headers=None, portion=None):
     if not headers:
         headers = {"Content-Type": "application/json"}
     ret = None
-    # LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
+#    LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
     import time
     time.sleep(0.5)
     if method == "post":
@@ -34,10 +34,10 @@ def common_request(path, method, body=None, headers=None, portion=None):
         ret = requests.put(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "delete":
         ret = requests.delete(path, headers=headers, verify=False, timeout=5, data=None)
-    code, body = ret.status_code, json.loads(ret.content) if re.content else None
+    code, body = ret.status_code, json.loads(ret.content) if ret.content else None
     if portion:
         return code, body
-    # LOG.info("Request resp code: {0}, body : {1}".format(code, str(body)))
+ #   LOG.info("Request resp code: {0}, body : {1}".format(code, str(body)))
     return ret
 
 
