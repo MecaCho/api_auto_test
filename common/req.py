@@ -1,7 +1,6 @@
 import requests
 import json
 import logging
-
 from log.log import return_api_resp
 
 requests.packages.urllib3.disable_warnings()

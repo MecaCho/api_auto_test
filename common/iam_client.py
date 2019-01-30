@@ -14,16 +14,18 @@ BASEURL = "https://iam.cn-north-1.myhuaweicloud.com/v3/auth/tokens"
 URI = BASEURL + ""
 
 
-class Client_(object):
-    def __init__(self, usr, pwd, project_id):
+class ClientIAM(object):
+    def __init__(self, usr, pwd, project_id, region):
         self.usr = usr
         self.pwd = pwd
         self.project_id = project_id
+        self.region = region
         self.headers = {"Content-Type": "application/json"}
 
     def get_service_token(self):
         file_path = os.path.dirname(os.path.abspath(__file__))
-        token_file = file_path + "/" + self.usr + ".cert"
+        file_name = "-".join(self.usr, self.region, self.project_id) + ".cert"
+        token_file = file_path + "/" + file_name
         if os.path.exists(token_file):
             with open(token_file, "r") as fp:
                 try:
@@ -48,5 +50,5 @@ class Client_(object):
 
 
 if __name__ == "__main__":
-    test_client = Client_()
+    test_client = ClientIAM()
     print test_client.test_clienervice_token()

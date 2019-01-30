@@ -24,6 +24,7 @@ class BASE(object):
         self.pwd = pwd
         self.usr = usr
         self.token = None
+        self.region = url.split(".")[1]
         self.base_url = BASE_URL.format(url=url, api_version=api_version)
         self.headers = None
         self.url_nodes = NODES
@@ -41,7 +42,7 @@ class BASE(object):
         return res_dict[resource_type]
 
     def get_token(self):
-        iam = iam_client.Client_(usr=self.usr, pwd=self.pwd, project_id=self.project_id)
+        iam = iam_client.ClientIAM(usr=self.usr, pwd=self.pwd, project_id=self.project_id, region=self.region)
         self.token = iam.get_service_token()
 
     def req(self, path, method, body):
