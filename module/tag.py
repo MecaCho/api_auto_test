@@ -79,6 +79,7 @@ class TAG(BASE):
         try:
             self.init_tag(resource_type="edge_node")
             for action in ["filter", "count"]:
+                self.init_tag(resource_type="edge_node")
                 # TC_TMS_QuerryResourceInstanceFilter_001	请求体中带所有必选参数，查询实例成功
                 code, response = self.query_ins("edge_node", action, [{"key": "key0", "values": ["value0"]}])
                 assert code == 200
@@ -454,6 +455,7 @@ class TAG(BASE):
         except Exception:
             import traceback
             print traceback.print_exc()
+            raise Exception
 
     def test_batch_tags(self):
         self.init_tag(resource_type="edge_node")
@@ -760,8 +762,7 @@ class TAG(BASE):
             # TC_TMS_BatchCreatDeleteResourceTags_076	创建资源标签，已存在3个，再次添加8个，其中有一组与之前添加的标签键值都相同，添加成功
             code, resp = self.get_tags_of_resource(resource_type="edge_node", resource_id=node_id)
             assert code == 200
-            tags_resp = json.loads(resp)["tags"]
-            print resp
+            tags_resp = resp["tags"]
             for tag in tags_resp:
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=[tag],
                                              action="delete")
@@ -928,7 +929,7 @@ class TAG(BASE):
             # TC_TMS_BatchCreatDeleteResourceTags_130	删除资源标签，请求中不带token，删除失败
             code, resp = self.get_tags_of_resource(resource_type="edge_node", resource_id=node_id)
             assert code == 200
-            tags_num = len(json.loads(resp)["tags"])
+            tags_num = len(resp["tags"])
             print resp
             if tags_num != 0:
                 for tag in json.loads(resp)["tags"]:
@@ -950,3 +951,4 @@ class TAG(BASE):
         except Exception:
             import traceback
             print traceback.print_exc()
+            raise Exception

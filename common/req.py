@@ -24,6 +24,8 @@ def common_request(path, method, body=None, headers=None):
         headers = {"Content-Type": "application/json"}
     ret = None
     LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
+    import time
+    time.sleep(0.5)
     if method == "post":
         ret = requests.post(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "get":

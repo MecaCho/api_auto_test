@@ -45,7 +45,8 @@ class BASE(object):
         self.token = iam.get_service_token()
 
     def req(self, path, method, body):
-        self.get_token()
+        if not self.token:
+            self.get_token()
         self.headers = {"X-Auth-Token": self.token, "Content-Type": "application/json"}
         path = self.base_url + path
         return common_request(path=path, method=method, body=body, headers=self.headers)
