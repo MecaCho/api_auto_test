@@ -32,15 +32,15 @@ def common_request(path, method, body=None, headers=None):
         ret = requests.put(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "delete":
         ret = requests.delete(path, headers=headers, verify=False, timeout=5, data=None)
-    if ret:
-    	LOG.debug("Request response result : {}".format(json.dumps(ret.__dict__)))
-    	code, body = ret.status_code, ret.content
-    	LOG.info("Request resp code: {0}, body : {1}".format(code, body))    
-    	return ret
-    else:
-        LOG.error("Do request error.")
-        raise Exception("Request error")
+    #LOG.debug("Request response result : {}".format(json.dumps(ret.__dict__)))
+    code, body = ret.status_code, ret.content
+    LOG.info("Request resp code: {0}, body : {1}".format(code, body))    
+    return ret
 
 
 if __name__ == '__main__':
     print("hello")
+    body = '{"auth": {"scope": {"project": {"id": "988a1af23ff942879d4844f233ba7b23"}}, "identity": {"password": {"user": {"domain": {"name": "qiuwenqi"}, "password": "421521qwq~", "name": "qiuwenqi"}}, "methods": ["password"]}}}'
+    path = "https://iam.cn-north-1.myhuaweicloud.com/v3/auth/tokens"
+    common_request(path=path, method="post", body=json.loads(body))
+    common_request(path="http://www.baidu.com", method="get")

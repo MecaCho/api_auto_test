@@ -5,6 +5,10 @@ import requests
 from req import common_request
 from template.token import set_get_token_projectid_body
 import json
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s - %(name)s - %(message)s")
+LOG = logging.getLogger(__name__)
 
 BASEURL = "https://iam.cn-north-1.myhuaweicloud.com/v3/auth/tokens"
 URI = BASEURL + ""
@@ -25,14 +29,14 @@ class Client_(object):
                 try:
                     read_token = json.load(fp)
                 except Exception as err:
-                    print "get restore token error", str(err)
+                    LOG.error("get restore token error", str(err))
                 if read_token and read_token.get("token") and (
                     time.strftime("%Y-%m-%dT%H:%M:%S.000000Z") < read_token.get("expires_at")):
-                    print "get restore token"
+                    LOG.info("get restore token from {}.".format(token_file))
                     return read_token.get("token")
-            post_body = set_get_token_projectid_body(usr=self.usr, pwd=self.pwd, project_id=self.project_id)
-            ret = common_request(path=BASEURL, method="post", body=post_body)
-            token = str(ret.headers["X-Subject-Token"])
+        post_body = set_get_token_projectid_body(usr=self.usr, pwd=self.pwd, project_id=self.project_id)
+        ret = common_request(path=BASEURL, method="post", body=post_body)
+        token = str(ret.headers["X-Subject-Token"])
         token_dict = dict()
         expires_at = json.loads(ret.content)["token"]["expires_at"]
 
