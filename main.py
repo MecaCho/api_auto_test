@@ -33,7 +33,6 @@ if __name__ == '__main__':
             usr=usr, pwd=pwd, project_id=project_id,
             url=url, api_version=api_version)
     client.list_nodes()
-
     client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
     client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
     print "0"*100

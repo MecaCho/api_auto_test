@@ -23,3 +23,4 @@ class Node(BASE):
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
+
