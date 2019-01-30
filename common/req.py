@@ -19,11 +19,11 @@ class Base(object):
 
 
 @return_api_resp()
-def common_request(path, method, body=None, headers=None):
+def common_request(path, method, body=None, headers=None, portion=None):
     if not headers:
         headers = {"Content-Type": "application/json"}
     ret = None
-    LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
+    # LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
     import time
     time.sleep(0.5)
     if method == "post":
@@ -34,9 +34,10 @@ def common_request(path, method, body=None, headers=None):
         ret = requests.put(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "delete":
         ret = requests.delete(path, headers=headers, verify=False, timeout=5, data=None)
-    #LOG.debug("Request response result : {}".format(json.dumps(ret.__dict__)))
-    code, body = ret.status_code, ret.content
-    LOG.info("Request resp code: {0}, body : {1}".format(code, body))    
+    code, body = ret.status_code, json.loads(ret.content) if re.content else None
+    if portion:
+        return code, body
+    # LOG.info("Request resp code: {0}, body : {1}".format(code, str(body)))
     return ret
 
 

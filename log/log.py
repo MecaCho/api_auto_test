@@ -44,7 +44,21 @@ def return_api_resp(*args, **kwargs):
                                 "Func name : {2} , args: {0}, kwargs : {1}".format(args,
                                                                                    json.dumps(kwargs),
                                                                                    func.__name__))
-                LOG.info("Cost time : {0}s, start at :{1}".format(cost_time, time.ctime(time_satrt)))
+
+                log_dict = {"method": kwargs.get("method"), "path": kwargs.get("path"),
+                            "cost": cost_time, "st_time": time.ctime(time_satrt)}
+                if resp:
+                    if kwargs.get("portion"):
+                        log_dict["resp_code"], _ = resp
+                    else:
+                        try:
+                            log_dict["resp_code"] = resp.code
+                        except Exception:
+                            log_dict["resp_code"] = resp
+                LOG.info(
+                        "Func method: {method}, path :{path}, resp: {resp_code}, "
+                        "cost time : {cost}s, start at :{st_time}".format(
+                                **log_dict))
             except Exception as e:
                 LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
                 raise e
