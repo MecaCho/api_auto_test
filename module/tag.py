@@ -49,6 +49,13 @@ class TAG(BASE):
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
+    def add_tag(self, resource_type, resource_id, key="edge_node_key0", value="edge_node_value0"):
+        data_post = {"tag": {"key": key, "value": value}}
+        path = self.url_add_tag.format(
+                project_id=self.project_id, resource_type=resource_type, resource_id=resource_id)
+        ret = self.req(method="post", path=path, body=data_post)
+        return ret.status_code, json.loads(ret.content)
+
     def test_query_ins(self):
         try:
             for action in ["filter", "count"]:
@@ -435,52 +442,52 @@ class TAG(BASE):
             node_id = node["nodes"][0]["id"]
             print node_id
             # TC_TMS_BatchCreatDeleteResourceTags_001	带所有必选参数，创建一个资源标签成功
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=1),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=1),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=1),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=1),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_002	带所有必选参数，创建3个资源标签成功
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=3),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=3),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=3),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=3),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_003	带所有必选参数，创建5个资源标签成功
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=5),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=5),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=5),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=5),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_004	带所有必选参数，创建8个资源标签成功
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=8),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=8),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=8),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=8),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_005	带所有必选参数，创建10个资源标签成功
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=10),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=10),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=10),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=10),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_006	带所有必选参数，修改10个资源标签成功
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=1),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=1),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=1),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=1),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=1),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=1),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_007	带所有必选参数，创建11个资源标签失败
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=11),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(num=11),
                                          action="create")
             assert code == 400
             # TC_TMS_BatchCreatDeleteResourceTags_008	创建一个资源标签，key值为null，创建失败
@@ -720,13 +727,13 @@ class TAG(BASE):
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_075	创建资源标签，已存在3个，再次添加8个，添加失败
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(3),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(3),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(11)[3:],
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(11)[3:],
                                          action="create")
             assert code == 400
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(3),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(3),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_076	创建资源标签，已存在3个，再次添加8个，其中有一组与之前添加的标签键值都相同，添加成功
@@ -738,13 +745,13 @@ class TAG(BASE):
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=[tag],
                                              action="delete")
                 assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(3),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(3),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(10)[2:],
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(10)[2:],
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(10),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(10),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_078	删除一个资源标签，key字段缺失，删除失败
@@ -909,13 +916,13 @@ class TAG(BASE):
                                                  tags=[{"key": k, "value": v}], action="delete")
                     assert code == 204
             # assert len(json.loads(resp)["tags"]) == 0
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(3),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(3),
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(10)[2:],
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(10)[2:],
                                          action="create")
             assert code == 204
-            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(10),
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(10),
                                          action="delete")
             assert code == 204
             # TC_TMS_BatchCreatDeleteResourceTags_077	删除资源标签，含有重复的key值，删除成功
