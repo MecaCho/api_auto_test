@@ -1,4 +1,4 @@
-from common.req import _request
+from common.req import common_request
 from template import token
 from common import iam_client
 
@@ -14,7 +14,7 @@ class BASE(object):
         self.usr = usr
         self.token = None
         self.base_url = BASE_URL.format(url=url, api_version=api_version)
-
+        self.headers = None
 
     def get_token(self):
         iam = iam_client.Client_(usr=self.usr, pwd=self.pwd, project_id=self.project_id)
@@ -24,7 +24,6 @@ class BASE(object):
         self.get_token()
         self.headers = {"X-Auth-Token": self.token, "Content-Type": "application/json"}
         path = self.base_url + path
-        print path
-        return _request(path=path, method=method, body=body, headers=self.headers)
+        return common_request(path=path, method=method, body=body, headers=self.headers)
 
 

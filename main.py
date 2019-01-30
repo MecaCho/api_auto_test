@@ -1,13 +1,16 @@
-from log.log import return_api_resp
-from module import tag, node
 import json
 import os
+import sys
+import getpass
+
+from log.log import return_api_resp
+from module import tag, node
+
 
 @return_api_resp()
 def test_fun():
     return [i for i in xrange(100)]
 
-from common.req import _request
 
 def read_config():
     print os.path.abspath(__file__)
@@ -18,7 +21,6 @@ def read_config():
 
 if __name__ == '__main__':
     regions = read_config()
-    import sys,getpass
     users = read_config()
     usr = users[0].get("user")
     pwd = getpass.getpass("please input user {} password : ".format(usr))
@@ -32,6 +34,6 @@ if __name__ == '__main__':
             url=url, api_version=api_version)
     client.list_nodes()
 
-    client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
+    client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
     client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
 

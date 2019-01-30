@@ -14,7 +14,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s -- %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s - %(name)s - %(message)s")
 LOG = logging.getLogger(__name__)
 
 
@@ -37,12 +37,13 @@ def return_api_resp(*args, **kwargs):
                 resp = func(*args, **kwargs)
                 time_end = time.time()
                 cost_time = time_end - time_satrt
-		if kwargs.get("headers"):
-			if kwargs.get("headers").get("X-Auth-Token"):
-				kwargs["headers"].pop("X-Auth-Token")
-				
-                LOG.info("Func name : {2} , args: {0}, kwargs : {1}".format(args, json.dumps(kwargs), func.__name__))
-	#	LOG.info(resp)
+                if kwargs.get("headers"):
+                    if kwargs.get("headers").get("X-Auth-Token"):
+                        kwargs["headers"].pop("X-Auth-Token")
+                        LOG.info(
+                                "Func name : {2} , args: {0}, kwargs : {1}".format(args,
+                                                                                   json.dumps(kwargs),
+                                                                                   func.__name__))
                 LOG.info("Cost time : {0}s, start at :{1}".format(cost_time, time.ctime(time_satrt)))
             except Exception as e:
                 LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))

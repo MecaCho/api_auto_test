@@ -3,7 +3,7 @@ import requests
 import json
 import time
 from base import BASE
-from common.req import _request
+from common.req import common_request
 
 NODES = "/{project_id}/edgemgr/nodes"
 NODE = "/{project_id}/edgemgr/nodes/{node_id}"

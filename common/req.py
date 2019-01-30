@@ -1,10 +1,13 @@
-from log.log import return_api_resp
 import requests
 import json
-requests.packages.urllib3.disable_warnings()
 import logging
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s -- %(message)s")
+
+from log.log import return_api_resp
+
+requests.packages.urllib3.disable_warnings()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s - %(name)s - %(message)s")
 LOG = logging.getLogger(__name__)
+
 
 class Base(object):
     def __init__(self, project_id, url, port, token):
@@ -16,10 +19,11 @@ class Base(object):
 
 
 @return_api_resp()
-def _request(path, method, body=None, headers=None):
+def common_request(path, method, body=None, headers=None):
     if not headers:
         headers = {"Content-Type": "application/json"}
     ret = None
+    LOG.info("Request method {}, path {}".format(method, path))
     if method == "post":
         ret = requests.post(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "get":
