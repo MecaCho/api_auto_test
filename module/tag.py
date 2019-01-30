@@ -163,6 +163,17 @@ class TAG(BASE):
                                          value="edge_node_value0")
                 assert code == 204
 
+                # add null tag
+                code, rep = self.add_tag(resource_type="edge_node", resource_id=node_id, key="null",
+                                         value="")
+                assert code == 204
+
+		# query null tag
+                code, response = self.query_ins("edge_node", action, [{"key": "null", "values": [""]}])
+                assert code == 200
+		#########################################
+                assert response["total_count"] == 0
+
                 # TC_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）
                 code, response = self.query_ins("edge_node", action,
                                                 [{"key": " edge_node_key0 ", "values": ["edge_node_value0"]}])
