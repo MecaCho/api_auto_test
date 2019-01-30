@@ -5,9 +5,6 @@ import time
 from base import BASE
 from common.req import common_request
 
-NODES = "/{project_id}/edgemgr/nodes"
-NODE = "/{project_id}/edgemgr/nodes/{node_id}"
-
 
 class Node(BASE):
     def __init__(self, project_id, url, api_version, pwd, usr):
@@ -20,7 +17,7 @@ class Node(BASE):
         self.usr = usr
 
     def list_nodes(self):
-        path = NODES.format(project_id=self.project_id)
+        path = self.url_nodes.format(project_id=self.project_id)
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
