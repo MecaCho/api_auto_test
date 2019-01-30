@@ -37,7 +37,7 @@ class TAG(BASE):
         path = self.url_batch_tags.format(
                 project_id=self.project_id, resource_id=resource_id, resource_type=resource_type)
         ret = self.req(method="post", path=path, body=data_post)
-        return ret.status_code, json.loads(ret.content)
+        return ret.status_code, json.loads(ret.content) if ret.content else ""
 
     def get_tags_of_resource(self, resource_type, resource_id):
         path = self.url_tags.format(project_id=self.project_id, resource_type=resource_type, resource_id=resource_id)
