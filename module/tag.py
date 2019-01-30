@@ -19,7 +19,6 @@ class TAG(BASE):
         self.pwd = pwd
         self.usr = usr
 
-    @static_method()
     def get_tag_dict(self, num=1):
         return [{"key": "qwq_tag_key" + str(i), "value": "qwq_tag_value" + str(i)} for i in xrange(num)]
 
@@ -431,9 +430,9 @@ class TAG(BASE):
 
     def test_batch_tags(self):
         try:
-            code, node = self.create_resource(resource_type="nodes")
-            assert code == 201
-            node_id = node["node"]["id"]
+            code, node = self.list_ress(resource_type="nodes")
+            assert code == 200
+            node_id = node["nodes"][0]["id"]
             print node_id
             # TC_TMS_BatchCreatDeleteResourceTags_001	带所有必选参数，创建一个资源标签成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=get_tag_dict(num=1),

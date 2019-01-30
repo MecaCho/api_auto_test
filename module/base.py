@@ -1,3 +1,5 @@
+import json
+
 from common.req import common_request
 from template import token
 from common import iam_client
@@ -10,7 +12,7 @@ QUERY_INS = "/{project_id}/ief-{resource_type}/resource_instances/action"
 ADD_TAG = "/{project_id}/ief-{resource_type}/{resource_id}/tags"
 ADD_TAGS = "/{project_id}/ief-{resource_type}/{resource_id}/tags/action"
 RESS_TAGS = "/{project_id}/ief-{resource_type}/tags"
-RES_URL = "/v1/{project_id}/edgemgr/{resource_type}"
+RES_URL = "/{project_id}/edgemgr/{resource_type}"
 
 
 class BASE(object):

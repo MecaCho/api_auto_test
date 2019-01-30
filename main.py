@@ -36,4 +36,5 @@ if __name__ == '__main__':
 
     client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
     client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
-
+    client.test_query_ins()
+    client.test_batch_tags()
