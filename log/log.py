@@ -63,28 +63,28 @@ def return_api_resp(*args, **kwargs):
                 LOG.debug("Func name : {2} , args: {0}, kwargs : {1}".format(args, json.dumps(kwargs), func.__name__))
                 time_satrt = time.time()
                 resp = func(*args, **kwargs)
+                LOG.info(resp)
                 time_end = time.time()
                 cost_time = time_end - time_satrt
                 if kwargs.get("headers"):
                     if kwargs.get("headers").get("X-Auth-Token"):
                         kwargs["headers"].pop("X-Auth-Token")
-                        LOG.debug(
+                        LOG.info(
                                 "Func name : {2} , args: {0}, kwargs : {1}".format(args,
                                                                                    json.dumps(kwargs),
                                                                                    func.__name__))
 
                 log_dict = {"method": kwargs.get("method"), "path": kwargs.get("path"),
                             "cost": cost_time, "st_time": time.ctime(time_satrt)}
-                if resp:
-                    if kwargs.get("portion"):
-                        log_dict["resp_code"], _ = resp
-                    else:
-                        try:
-                            log_dict["resp_code"] = str(resp.status_code)
-                        except Exception:
-                            log_dict["resp_code"] = resp
+#                import pdb
+ #               pdb.set_trace()
+                if kwargs.get("portion"):
+                    log_dict["resp_code"], _ = resp
                 else:
-                    log_dict["resp_code"] = ""
+                    try:
+                        log_dict["resp_code"] = str(resp.status_code)
+                    except Exception:
+                        log_dict["resp_code"] = resp
                 LOG.info(
                         "Func method: {method}, path :{path}, resp: {resp_code}, "
                         "cost time : {cost}s, start at :{st_time}".format(

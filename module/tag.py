@@ -245,7 +245,8 @@ class TAG(BASE):
 
                 code, response = self.query_ins("edge_node", action, [{"key": "null", "values": [""]}])
                 assert code == 200
-                assert response["total_count"] == 1
+                # query null tag          
+                assert response["total_count"] == 0
                 # TC_TMS_QuerryResourceInstanceFilter_040	tags字段values值为空格，查询资源实例成功
                 code, response = self.query_ins("edge_node", action, [{"key": "q" * 127, "values": [" "]}])
                 assert code == 200

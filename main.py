@@ -25,7 +25,7 @@ if __name__ == '__main__':
     for user_info in users:
         usr = user_info.get("user")
         pwd = getpass.getpass("please input user {} password : ".format(usr))
-        regions = user_info.get("regions")
+        regions = user_info.get("regions")[:1]
         for region in regions:
             project_id = region["project_id"]
             url = region["ief_url"]

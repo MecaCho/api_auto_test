@@ -24,7 +24,7 @@ class ClientIAM(object):
 
     def get_service_token(self):
         file_path = os.path.dirname(os.path.abspath(__file__))
-        file_name = "-".join(self.usr, self.region, self.project_id) + ".cert"
+        file_name = "-".join([self.usr, self.region, self.project_id]) + ".cert"
         token_file = file_path + "/" + file_name
         if os.path.exists(token_file):
             with open(token_file, "r") as fp:
