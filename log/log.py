@@ -14,7 +14,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-logging.basicConfig(level=logging.INFO,filename="test.log", format='<tr bordercolor="Blue" align="center"><td colspan="5">%(asctime)s-%(message)s</td></tr>')
+logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="3">%(asctime)s-%(message)s</td></tr>')
 #logging.basicConfig(level=logging.INFO, format="%(message)s")
 LOG = logging.getLogger(__name__)
 
@@ -98,7 +98,7 @@ def return_api_resp(*args, **kwargs):
                 #                **log_dict))
                 log_dict["expect_code"] = log_dict["resp_code"]
                 log_dict["result"] = "success"
-                msg = '<tr bordercolor="Blue" align="center"><td>{method}</td><td>{path}</td><td>{body}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td></tr>'.format(**log_dict)
+                msg = '<tr bordercolor="Blue" align="center"><td>{method}</td><td>{path}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td><td>{body}</td></tr>'.format(**log_dict)
                 #LOG.info(msg)
                 createlog(info=msg)
             except Exception as e:
