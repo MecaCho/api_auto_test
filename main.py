@@ -19,6 +19,9 @@ def read_config():
         conf_dict = json.load(fp)
         return conf_dict
 
+def gen_report():
+    pass
+
 if __name__ == '__main__':
     regions = read_config()
     users = read_config()

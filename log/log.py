@@ -14,7 +14,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s - %(name)s - %(message)s")
+logging.basicConfig(level=logging.INFO,filename="test.log", format='<tr bordercolor="Blue" align="center"><td colspan="5">%(asctime)s-%(message)s</td></tr>')
+#logging.basicConfig(level=logging.INFO, format="%(message)s")
 LOG = logging.getLogger(__name__)
 
 
@@ -60,22 +61,28 @@ def return_api_resp(*args, **kwargs):
         def wrapper(*args, **kwargs):
             resp = None
             try:
-                LOG.debug("Func name : {2} , args: {0}, kwargs : {1}".format(args, json.dumps(kwargs), func.__name__))
+                #LOG.debug("Func name : {2} , args: {0}, kwargs : {1}".format(args, json.dumps(kwargs), func.__name__))
                 time_satrt = time.time()
                 resp = func(*args, **kwargs)
-                LOG.info(resp)
+                #LOG.info(resp)
                 time_end = time.time()
                 cost_time = time_end - time_satrt
+                time.sleep(0.5)
                 if kwargs.get("headers"):
                     if kwargs.get("headers").get("X-Auth-Token"):
                         kwargs["headers"].pop("X-Auth-Token")
-                        LOG.info(
-                                "Func name : {2} , args: {0}, kwargs : {1}".format(args,
-                                                                                   json.dumps(kwargs),
-                                                                                   func.__name__))
-
-                log_dict = {"method": kwargs.get("method"), "path": kwargs.get("path"),
-                            "cost": cost_time, "st_time": time.ctime(time_satrt)}
+                 #       LOG.info(
+                 #               "Func name : {2} , args: {0}, kwargs : {1}".format(args,
+                 #                                                                  json.dumps(kwargs),
+                 #                                                                  func.__name__))
+                try:
+                    path = kwargs.get("path").split("/v2/")[1]
+                except Exception as err:
+                    path = "error"
+                    LOG.error("Get request path error : {}".format(str(err)))
+                log_dict = {"method": kwargs.get("method"), "path": path, "body": str(kwargs.get("body")),
+                            "cost": cost_time, 
+                            "st_time": time.ctime(time_satrt)}
 #                import pdb
  #               pdb.set_trace()
                 if kwargs.get("portion"):
@@ -85,10 +92,15 @@ def return_api_resp(*args, **kwargs):
                         log_dict["resp_code"] = str(resp.status_code)
                     except Exception:
                         log_dict["resp_code"] = resp
-                LOG.info(
-                        "Func method: {method}, path :{path}, resp: {resp_code}, "
-                        "cost time : {cost}s, start at :{st_time}".format(
-                                **log_dict))
+                #LOG.info(
+                #        "Request method: {method}, path :{path}, resp: {resp_code}, body: {body}, "
+                #        "cost time : {cost}s, start at :{st_time}".format(
+                #                **log_dict))
+                log_dict["expect_code"] = log_dict["resp_code"]
+                log_dict["result"] = "success"
+                msg = '<tr bordercolor="Blue" align="center"><td>{method}</td><td>{path}</td><td>{body}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td></tr>'.format(**log_dict)
+                #LOG.info(msg)
+                createlog(info=msg)
             except Exception as e:
                 LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
                 raise e
@@ -110,7 +122,7 @@ def createlog(name=__name__,log_file_name='test.log', debug=[], info=[], warn=[]
         handler = logging.FileHandler(log_file_name)
         handler.setLevel(logging.DEBUG)
         # create a logging format
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+        formatter = logging.Formatter('%(message)s')
         handler.setFormatter(formatter)
         # add the handlers to the logger
         logger.addHandler(handler)
