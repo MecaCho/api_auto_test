@@ -14,8 +14,9 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="3">%(asctime)s-%(message)s</td></tr>')
-#logging.basicConfig(level=logging.INFO, format="%(message)s")
+#logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
+#logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left">%(message)s</tr>')
 LOG = logging.getLogger(__name__)
 
 
@@ -46,9 +47,9 @@ def assert_resp(*args, **kwargs):
             except Exception as err:
                 ret = "Failed"
                 LOG.error("Check test result failed : {}".format(str(err)))
-            LOG.info("Expection response code : {}, Real response code :{}, Test Result:{}".format(
-                    expection_code, code, ret
-            ))
+            #LOG.info("Expection response code : {}, Real response code :{}, Test Result:{}".format(
+            #        expection_code, code, ret
+            #))
             return resp
         return wrapper
     return catch_resp
@@ -79,7 +80,7 @@ def return_api_resp(*args, **kwargs):
                     path = kwargs.get("path").split("/v2/")[1]
                 except Exception as err:
                     path = "error"
-                    LOG.error("Get request path error : {}".format(str(err)))
+                    #LOG.error("Get request path error : {}".format(str(err)))
                 log_dict = {"method": kwargs.get("method"), "path": path, "body": str(kwargs.get("body")),
                             "cost": cost_time, 
                             "st_time": time.ctime(time_satrt)}
@@ -98,23 +99,26 @@ def return_api_resp(*args, **kwargs):
                 #                **log_dict))
                 log_dict["expect_code"] = log_dict["resp_code"]
                 log_dict["result"] = "success"
-                msg = '<tr bordercolor="Blue" align="center"><td>{method}</td><td>{path}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td><td>{body}</td></tr>'.format(**log_dict)
-                #LOG.info(msg)
-                createlog(info=msg)
+                msg = '<td>{method}</td><td>{path}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td><td>{body}</td>'.format(**log_dict)
+                LOG.info('<tr bordercolor="Blue" align="left">{}</tr>'.format(msg))
+                #logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
+                #log = logging.getLogger("test result")
+                #log.info(msg)
             except Exception as e:
-                LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
+                #LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
                 raise e
             return resp
         return wrapper
     return catch_api_error
 
 
-def createlog(name=__name__,log_file_name='test.log', debug=[], info=[], warn=[], error=[], fetal=[]):
+def createlog(name=__name__,log_file_name='report.html', debug=[], info=[], warn=[], error=[], fetal=[]):
     try:
         if os.path.getsize(log_file_name) > 1000000:
             os.remove(log_file_name)
     except BaseException:
-        LOG.error('txt can not be deleted')
+        pass
+        #LOG.error('txt can not be deleted')
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     if not logger.handlers:
