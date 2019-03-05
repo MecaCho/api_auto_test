@@ -41,10 +41,14 @@ if __name__ == '__main__':
         for region in regions:
             project_id = region["project_id"]
             url = region["ief_url"]
+            file_name = "-".join(url.split(".")[:1])
+            os.system("rm -rf report.html && touch report.html")
             api_version = region["api_version"]
             LOG.info('<h1 class="center"<nobr>IEF TMS API Auto Test Result Report ({})</nobr></h1>'.format(url))
             LOG.info('<table bordercolor="Blue" width="1200" align="left" cellspacing="0" border="1">')
-            LOG.info('<tr bordercolor="Blue" align="left"><td>method</td><td>path</td><td>cost_time(s)</td><td>resp_code</td><td>expect_code</td><td>Result</td><td>body</td></tr>')
+            LOG.info('<style>table { table-layout:fixed; word-wrap: break-word;}</style>')
+
+            LOG.info('<tr bordercolor="Blue" align="left"><td width="100">method</td><td width="300">path</td><td width="100">cost_time(s)</td><td width="100">resp_code</td><td width="100">expect_code</td><td width="100">Result</td><td width="400">body</td></tr>')
 #            client = node.Node(
 #                    usr=usr, pwd=pwd, project_id=project_id,
 #                    url=url, api_version=api_version)
@@ -56,4 +60,5 @@ if __name__ == '__main__':
             print "1"*100
             client.test_batch_tags()
             LOG.info("</table><br></br>\n<br></br>\n<br></br>")
-        LOG.info("</body></html>")
+            LOG.info("</body></html>")
+            os.system("cp report.html {}_report.html".format(file_name))
