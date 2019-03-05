@@ -41,8 +41,8 @@ if __name__ == '__main__':
         for region in regions:
             project_id = region["project_id"]
             url = region["ief_url"]
-            file_name = "-".join(url.split(".")[:1])
-            os.system("rm -rf report.html && touch report.html")
+            file_name = "-".join(url.split(".")[:2])
+#            os.system("rm -rf report.html && touch report.html && chmod 777 report.html")
             api_version = region["api_version"]
             LOG.info('<h1 class="center"<nobr>IEF TMS API Auto Test Result Report ({})</nobr></h1>'.format(url))
             LOG.info('<table bordercolor="Blue" width="1200" align="left" cellspacing="0" border="1">')
@@ -61,4 +61,4 @@ if __name__ == '__main__':
             client.test_batch_tags()
             LOG.info("</table><br></br>\n<br></br>\n<br></br>")
             LOG.info("</body></html>")
-            os.system("cp report.html {}_report.html".format(file_name))
+            os.system("mv report.html {}_TMS_report.html".format(file_name))
