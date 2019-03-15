@@ -620,12 +620,19 @@ class TAG(BASE):
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                              tags=[{"key": "key" + k, "value": "value0"}], action="create")
                 assert code == 400
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_030	创建一个资源标签，key字段包含特殊字符$，创建成功")
+            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_030	创建一个资源标签，key字段包含特殊字符$，创建失败")
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                             tags=[{"key": "key$", "value": "value0"}], action="create")
+            assert code == 400
             # IEF_TMS_BatchCreatDeleteResourceTags_030	创建一个资源标签，key字段包含特殊字符$，创建成功
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_031	创建一个资源标签，key字段包含特殊字符&，创建成功")
+            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_031	创建一个资源标签，key字段包含特殊字符&，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_031	创建一个资源标签，key字段包含特殊字符&，创建成功
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_032	创建一个资源标签，key字段包含特殊字符%，创建成功")
+            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_032	创建一个资源标签，key字段包含特殊字符%，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_032	创建一个资源标签，key字段包含特殊字符%，创建成功
+            for k in ["&", "%"]:
+		code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                             tags=[{"key": "key" + k, "value": "value0"}], action="create")
+                assert code == 400
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_033	创建一个资源标签，value值为null，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_033	创建一个资源标签，value值为null，创建失败
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
