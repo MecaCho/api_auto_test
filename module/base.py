@@ -1,5 +1,6 @@
 import json
-
+import sys
+sys.path.append("..")
 from common.req import common_request
 from template import token
 from common import iam_client

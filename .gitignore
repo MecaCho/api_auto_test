@@ -1,3 +1,7 @@
 *.pyc
 .idea/*
 *.cert
+node.json
+module/*.json
+module/*.gz
+module/*.tar
