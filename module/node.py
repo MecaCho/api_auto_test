@@ -46,4 +46,16 @@ class Node(BASE):
         }
         ret = self.req(method="post", path=path, body=node_post)
         return ret.status_code, json.loads(ret.content)
+    
+    @assert_resp(True, expection_code=201)
+    def init_node(self, name=None):
+        path = self.url_nodes.format(project_id=self.project_id)
+        if not name:
+            name = str(int(time.time()))
+        node_post = {
+            "name": name,
+            "description": "This is a test node."
+        }
+        ret = self.req(method="post", path=path, body=node_post)
+        return ret.status_code, json.loads(ret.content)
 
