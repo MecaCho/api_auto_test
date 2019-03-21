@@ -1,8 +1,14 @@
 import json
+import sys
 
+sys.path.append("..")
 from common.req import common_request
 from template import token
 from common import iam_client
+
+logging.basicConfig(level=logging.INFO, filename="report.html",
+                    format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+LOG = logging.getLogger(__name__)
 
 BASE_URL = "https://{url}/{api_version}"
 NODES = "/{project_id}/edgemgr/nodes"

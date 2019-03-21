@@ -1,4 +1,4 @@
-#-*-coding=UTF-8-*-
+# -*-coding=UTF-8-*-
 import os
 import threading
 import logging
@@ -27,26 +27,26 @@ def send_msg(body):
     print user, mail_pass
 
     credentials = Credentials(
-        username=user,  # Or myusername@example.com for O365
-        password=mail_pass
+            username=user,  # Or myusername@example.com for O365
+            password=mail_pass
     )
 
     mail_host = ".."
     config = Configuration(credentials, server=mail_host)
     account = Account(
-        primary_smtp_address=sender,
-        config=config, access_type='delegate'
+            primary_smtp_address=sender,
+            config=config, access_type='delegate'
     )
 
     addr = "@.com"
     subject = u""
     m = Message(
-        account=account,
-        subject=subject,
-        body=HTMLBody("".join(body)),
-        to_recipients=[
-            Mailbox(email_address=addr),
-        ],
+            account=account,
+            subject=subject,
+            body=HTMLBody("".join(body)),
+            to_recipients=[
+                Mailbox(email_address=addr),
+            ],
     )
     m.send()
     logger.info("Sended subject: %s to %s", subject, addr)

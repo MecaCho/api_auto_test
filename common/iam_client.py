@@ -33,7 +33,7 @@ class ClientIAM(object):
                 except Exception as err:
                     LOG.error("get restore token error", str(err))
                 if read_token and read_token.get("token") and (
-                    time.strftime("%Y-%m-%dT%H:%M:%S.000000Z") < read_token.get("expires_at")):
+                            time.strftime("%Y-%m-%dT%H:%M:%S.000000Z") < read_token.get("expires_at")):
                     LOG.debug("get restore token from {}.".format(token_file))
                     return read_token.get("token")
         post_body = set_get_token_projectid_body(usr=self.usr, pwd=self.pwd, project_id=self.project_id)

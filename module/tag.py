@@ -8,10 +8,11 @@ from log.log import assert_resp, createlog
 
 TEST_CASE_SEQ = 0
 TOTAL_TIME = 0
-logging.basicConfig(level=logging.INFO, filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
-#logging.basicConfig(level=logging.INFO, format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+logging.basicConfig(level=logging.INFO, filename="report.html",
+                    format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+# logging.basicConfig(level=logging.INFO, format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
 LOG = logging.getLogger(__name__)
-#LOG = createlog()
+
 
 class TAG(BASE):
     def __init__(self, project_id, url, api_version, pwd, usr):
@@ -94,7 +95,8 @@ class TAG(BASE):
             code, response = self.query_ins("edge_node", action, [{"key": "key0", "values": ["value0"]}])
             assert code == 200
             assert response["total_count"] == 0
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_002	带必选参数tags（含有一组key和value），查询资源实例成功")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_002	带必选参数tags（含有一组key和value），查询资源实例成功")
             # IEF_TMS_QuerryResourceInstanceFilter_002	带必选参数tags（含有一组key和value），查询资源实例成功
             code, response = self.query_ins("edge_node", action, [{"key": "key0", "values": ["value0"]}])
             assert code == 200
@@ -118,7 +120,8 @@ class TAG(BASE):
             code, response = self.query_ins("edge_node", action,
                                             [{"key": str(i), "values": [str(i)]} for i in xrange(11)])
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_006	tags一个key对应2个value,且这两个value在不同的资源上，查询资源实例成功")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_006	tags一个key对应2个value,且这两个value在不同的资源上，查询资源实例成功")
             # IEF_TMS_QuerryResourceInstanceFilter_006	tags一个key对应2个value,且这两个value在不同的资源上，查询资源实例成功
             code, response = self.query_ins("edge_node", action,
                                             [{"key"   : "edge_node_key0",
@@ -142,7 +145,8 @@ class TAG(BASE):
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "edge_node_key0", "values": [str(i) for i in xrange(11)]}])
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_010	tags10个key对应10个value（即每个key里面有10个value），查询资源实例成功")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_010	tags10个key对应10个value（即每个key里面有10个value），查询资源实例成功")
             # IEF_TMS_QuerryResourceInstanceFilter_010	tags10个key对应10个value（即每个key里面有10个value），查询资源实例成功
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "edge_node_key" + str(j), "values": [str(i) for i in xrange(10)]}
@@ -202,27 +206,31 @@ class TAG(BASE):
             assert code == 200
             assert response["total_count"] == 1
 
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）")
             # IEF_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）
             code, response = self.query_ins("edge_node", action,
                                             [{"key": " edge_node_key0 ", "values": ["edge_node_value0"]}])
             assert code == 200
             assert response["total_count"] == 1
 
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）")
             # IEF_TMS_QuerryResourceInstanceFilter_018	tags字段key的值前后均含有空格，查询资源实例成功（校验是否前后trim）
             code, response = self.query_ins("edge_node", action,
                                             [{"key": " edge_node_key0 ", "values": ["edge_node_value0", "abc"]}])
             assert code == 200
             assert response["total_count"] == 1
 
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_019	tags字段key的值前后均含有多个空格，查询资源实例成功（校验是否前后trim）")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_019	tags字段key的值前后均含有多个空格，查询资源实例成功（校验是否前后trim）")
             # IEF_TMS_QuerryResourceInstanceFilter_019	tags字段key的值前后均含有多个空格，查询资源实例成功（校验是否前后trim）
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "  edge_node_key0  ", "values": ["edge_node_value0"]}])
             assert code == 200
             assert response["total_count"] == 1
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_020	tags字段key的值前面含有多个空格，查询资源实例成功（校验是否前后trim）")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_020	tags字段key的值前面含有多个空格，查询资源实例成功（校验是否前后trim）")
             # IEF_TMS_QuerryResourceInstanceFilter_020	tags字段key的值前面含有多个空格，查询资源实例成功（校验是否前后trim）
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "  edge_node_key0", "values": ["edge_node_value0"]}])
@@ -246,7 +254,8 @@ class TAG(BASE):
                                             [{"key": "q" * 127, "values": ["edge_node_value0"]}])
             assert code == 200
             assert response["total_count"] == 0
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_024	tags字段key的值长度为128，中间含有空格，查询资源实例失败")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_024	tags字段key的值长度为128，中间含有空格，查询资源实例失败")
             # IEF_TMS_QuerryResourceInstanceFilter_024	tags字段key的值长度为128，中间含有空格，查询资源实例失败
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "q" * 120 + " " + "q" * 7, "values": ["edge_node_value0"]}])
@@ -258,13 +267,15 @@ class TAG(BASE):
             assert code == 400
             # IEF_TMS_QuerryResourceInstanceFilter_035	tags字段key的值含有特殊字符%，查询资源实例成功
             for v in "*<>\=/|,$%":
-                self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_033	tags字段key的值含有特殊字符{}, ，查询资源实例成功".format(v))
+                self.assert_result(
+                        comment="# IEF_TMS_QuerryResourceInstanceFilter_033	tags字段key的值含有特殊字符{}, ，查询资源实例成功".format(
+                            v))
                 code, response = self.query_ins("edge_node", action, [{"key": v, "values": ["edge_node_value0"]}])
                 assert code == 200
                 assert response["total_count"] == 0
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_036	tags字段key的值为西语，查询资源实例成功")
+            # self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_036	tags字段key的值为西语，查询资源实例成功")
             # IEF_TMS_QuerryResourceInstanceFilter_036	tags字段key的值为西语，查询资源实例成功
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_037	tags字段key的值为葡语，查询资源实例成功")
+            # self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_037	tags字段key的值为葡语，查询资源实例成功")
             # IEF_TMS_QuerryResourceInstanceFilter_037	tags字段key的值为葡语，查询资源实例成功
             self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_038	tags字段values值有重复，查询资源实例失败")
             # IEF_TMS_QuerryResourceInstanceFilter_038	tags字段values值有重复，查询资源实例失败
@@ -332,7 +343,8 @@ class TAG(BASE):
                                             [{"key": "edge_node_key0", "values": ["q" * 255]}])
             assert code == 200
             assert response["total_count"] == 0
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_050	tags字段value的值长度为256，且中间含有空格，查询资源实例失败")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_050	tags字段value的值长度为256，且中间含有空格，查询资源实例失败")
             # IEF_TMS_QuerryResourceInstanceFilter_050	tags字段value的值长度为256，且中间含有空格，查询资源实例失败
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "edge_node_key0", "values": ["q" * 250 + " " + "q" * 5]}])
@@ -342,7 +354,8 @@ class TAG(BASE):
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "edge_node_key0", "values": ["q" * 256]}])
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_052	tags字段value的值含有特殊字符*(*为开头)，查询资源实例成功")
+            self.assert_result(
+                    comment="# IEF_TMS_QuerryResourceInstanceFilter_052	tags字段value的值含有特殊字符*(*为开头)，查询资源实例成功")
             # IEF_TMS_QuerryResourceInstanceFilter_052	tags字段value的值含有特殊字符*(*为开头)，查询资源实例成功
             code, response = self.query_ins("edge_node", action,
                                             [{"key": "edge_node_key0", "values": ["*edge_node_value0"]}])
@@ -351,7 +364,8 @@ class TAG(BASE):
             # assert response["total_count"] == 0
             for v in "<>\=/|,$%":
                 self.assert_result(
-                    comment="# IEF_TMS_QuerryResourceInstanceFilter_061	tags字段value的值含有特殊字符{}，查询资源实例成功".format(v))
+                        comment="# IEF_TMS_QuerryResourceInstanceFilter_061	tags字段value的值含有特殊字符{}，查询资源实例成功".format(
+                                v))
                 code, response = self.query_ins("edge_node", action, [{"key": "edge_node_key0", "values": [v]}])
                 assert code == 200
                 assert response["total_count"] == 0
@@ -415,7 +429,8 @@ class TAG(BASE):
             assert code == 200
             assert response["total_count"] == 1
             for li in ["*", "A", "", "null", 1001]:
-                self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_079	limit的值为{}，查询资源实例失败".format(li))
+                self.assert_result(
+                        comment="# IEF_TMS_QuerryResourceInstanceFilter_079	limit的值为{}，查询资源实例失败".format(li))
                 code, response = self.query_ins("edge_node", action,
                                                 [{"key": "edge_node_key0", "values": ["edge_node_value0"]}],
                                                 limit=li)
@@ -607,7 +622,8 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=[{"value": "value0"}],
                                          action="create")
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_020	创建一个资源标签，key字段为“AAaa00-99_中”字符，创建成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_020	创建一个资源标签，key字段为“AAaa00-99_中”字符，创建成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_020	创建一个资源标签，key字段为“AAaa00-99_中”字符，创建成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": u"AAaa00-99_中", "value": "value0"}], action="create")
@@ -616,21 +632,24 @@ class TAG(BASE):
             # IEF_TMS_BatchCreatDeleteResourceTags_021	创建一个资源标签，key字段包含非打印字符ASCII（0~31），创建失败
             # IEF_TMS_BatchCreatDeleteResourceTags_029	创建一个资源标签，key字段包含特殊字符,，创建失败
             for k in "*<>\=/|,$&%":
-                self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_029	创建一个资源标签，key字段包含特殊字符{}, ，创建失败".format(k))
+                self.assert_result(
+                        comment="# IEF_TMS_BatchCreatDeleteResourceTags_029	创建一个资源标签，key字段包含特殊字符{}, ，创建失败".format(k))
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                              tags=[{"key": "key" + k, "value": "value0"}], action="create")
                 assert code == 400
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_030	创建一个资源标签，key字段包含特殊字符$，创建失败")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_030	创建一个资源标签，key字段包含特殊字符$，创建失败")
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
-                                             tags=[{"key": "key$", "value": "value0"}], action="create")
+                                         tags=[{"key": "key$", "value": "value0"}], action="create")
             assert code == 400
             # IEF_TMS_BatchCreatDeleteResourceTags_030	创建一个资源标签，key字段包含特殊字符$，创建成功
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_031	创建一个资源标签，key字段包含特殊字符&，创建失败")
+            # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_031	创建一个资源标签，key字段包含特殊字符&，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_031	创建一个资源标签，key字段包含特殊字符&，创建成功
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_032	创建一个资源标签，key字段包含特殊字符%，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_032	创建一个资源标签，key字段包含特殊字符%，创建成功
             for k in ["&", "%"]:
-		code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                self.assert_result(
+                        comment="# IEF_TMS_BatchCreatDeleteResourceTags_032	创建一个资源标签，key字段包含特殊字符{}，创建失败".format(k))
+                code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                              tags=[{"key": "key" + k, "value": "value0"}], action="create")
                 assert code == 400
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_033	创建一个资源标签，value值为null，创建失败")
@@ -678,7 +697,8 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "q" * 43}], action="delete")
             assert code == 204
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_039	创建一个资源标签，value值长度为44(前面含有空格)，创建成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_039	创建一个资源标签，value值长度为44(前面含有空格)，创建成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_039	创建一个资源标签，value值长度为44(前面含有空格)，创建成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": " " + 43 * "q"}], action="create")
@@ -686,7 +706,8 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": " " + 43 * "q"}], action="delete")
             assert code == 204
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_040	创建一个资源标签，value值长度为44(中间含有空格)，创建失败")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_040	创建一个资源标签，value值长度为44(中间含有空格)，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_040	创建一个资源标签，value值长度为44(中间含有空格)，创建失败
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "q" * 20 + " " + 23 * "q"}], action="create")
@@ -701,7 +722,8 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=[{"key": "q"}],
                                          action="create")
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_043	创建一个资源标签，value字段为“AAaa00-99_中”字符，创建成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_043	创建一个资源标签，value字段为“AAaa00-99_中”字符，创建成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_043	创建一个资源标签，value字段为“AAaa00-99_中”字符，创建成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": u"AAaa00-99_中"}], action="create")
@@ -709,7 +731,8 @@ class TAG(BASE):
             # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_044	创建一个资源标签，value字段包含非打印字符ASCII（0~31），创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_044	创建一个资源标签，value字段包含非打印字符ASCII（0~31），创建失败
             for v in "*<>\=/|,$&%":
-                self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_055	创建一个资源标签，value字段包含特殊字符{}，创建成功".format(v))
+                self.assert_result(
+                        comment="# IEF_TMS_BatchCreatDeleteResourceTags_055	创建一个资源标签，value字段包含特殊字符{}，创建成功".format(v))
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                              tags=[{"key": "q", "value": "value" + v}], action="create")
                 assert code == 400
@@ -747,17 +770,36 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "value"}], action="creatE")
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_064	创建资源标签，resource_type和resource_id不一致，创建失败")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_064	创建资源标签，resource_type和resource_id不一致，创建失败")
+            code, resp = self.batch_tags(resource_type="device", resource_id=node_id,
+                                         tags=[{"key": "q", "value": "value"}], action="create")
+            assert code == 400
             # IEF_TMS_BatchCreatDeleteResourceTags_064	创建资源标签，resource_type和resource_id不一致，创建失败
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_065	创建资源标签，project_id为其他租户的project_id，创建失败")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_065	创建资源标签，project_id为其他租户的project_id，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_065	创建资源标签，project_id为其他租户的project_id，创建失败
+            tmp_project_id = self.project_id
+            import uuid
+
+            self.project_id = str(uuid.uuid4())
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                         tags=[{"key": "q", "value": "value"}], action="create")
+            assert code == 401
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_066	创建资源标签，project_id不存在，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_066	创建资源标签，project_id不存在，创建失败
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_067	创建资源标签，请求中带无效token，创建失败")
+            self.project_id = ""
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                         tags=[{"key": "q", "value": "value"}], action="create")
+            assert code == 401
+            # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_067	创建资源标签，请求中带无效token，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_067	创建资源标签，请求中带无效token，创建失败
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_068	创建资源标签，请求中不带token，创建失败")
+            # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_068	创建资源标签，请求中不带token，创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_068	创建资源标签，请求中不带token，创建失败
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_069	创建资源标签，批量添加标签的时候key和value值均重复（key和value为一组），创建失败")
+
+            self.project_id = tmp_project_id
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_069	创建资源标签，批量添加标签的时候key和value值均重复（key和value为一组），创建失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_069	创建资源标签，批量添加标签的时候key和value值均重复（key和value为一组），创建失败
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "value"}, {"key": "q", "value": "value"}],
@@ -780,7 +822,7 @@ class TAG(BASE):
                                          action="delete")
             assert code == 204
             self.assert_result(comment=
-                    "# IEF_TMS_BatchCreatDeleteResourceTags_072	创建资源标签，资源已存在标签，再次添加与之前key和value值相同的标签（key和value为一组），创建成功")
+                               "# IEF_TMS_BatchCreatDeleteResourceTags_072	创建资源标签，资源已存在标签，再次添加与之前key和value值相同的标签（key和value为一组），创建成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_072	创建资源标签，资源已存在标签，再次添加与之前key和value值相同的标签（key和value为一组），创建成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "value"}, {"key": "q1", "value": "value"}],
@@ -794,7 +836,8 @@ class TAG(BASE):
                                          tags=[{"key": "q", "value": "value"}, {"key": "q1", "value": "value"}],
                                          action="delete")
             assert code == 204
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_073	创建资源标签，资源已存在标签，再次添加与之前key值相同的标签，创建成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_073	创建资源标签，资源已存在标签，再次添加与之前key值相同的标签，创建成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_073	创建资源标签，资源已存在标签，再次添加与之前key值相同的标签，创建成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "value"}], action="create")
@@ -805,7 +848,8 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "value_new"}], action="delete")
             assert code == 204
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_074	创建资源标签，资源已存在标签，再次添加与之前value值相同的标签，创建成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_074	创建资源标签，资源已存在标签，再次添加与之前value值相同的标签，创建成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_074	创建资源标签，资源已存在标签，再次添加与之前value值相同的标签，创建成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": "value"}], action="create")
@@ -828,7 +872,8 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=self.get_tag_dict(3),
                                          action="delete")
             assert code == 204
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_076	创建资源标签，已存在3个，再次添加8个，其中有一组与之前添加的标签键值都相同，添加成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_076	创建资源标签，已存在3个，再次添加8个，其中有一组与之前添加的标签键值都相同，添加成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_076	创建资源标签，已存在3个，再次添加8个，其中有一组与之前添加的标签键值都相同，添加成功
             code, resp = self.get_tags_of_resource(resource_type="edge_node", resource_id=node_id)
             assert code == 200
@@ -896,7 +941,8 @@ class TAG(BASE):
             # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_088	删除一个资源标签，key字段包含非打印字符ASCII（0~31），删除成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_088	删除一个资源标签，key字段包含非打印字符ASCII（0~31），删除成功
             for k in "*<>\=/|,":
-                self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_096	删除一个资源标签，key字段包含特殊字符{}，删除成功".format(k))
+                self.assert_result(
+                        comment="# IEF_TMS_BatchCreatDeleteResourceTags_096	删除一个资源标签，key字段包含特殊字符{}，删除成功".format(k))
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                              tags=[{"key": k, "value": "value_new"}], action="delete")
                 assert code == 204
@@ -947,7 +993,8 @@ class TAG(BASE):
                                          tags=[{"key": "q", "value": "q" * 255}],
                                          action="delete")
             assert code == 204
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_105	删除一个资源标签，value值长度为256且前面含有空格，删除成功")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_105	删除一个资源标签，value值长度为256且前面含有空格，删除成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_105	删除一个资源标签，value值长度为256且前面含有空格，删除成功
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                          tags=[{"key": "q", "value": " " + "q" * 256}],
@@ -971,12 +1018,17 @@ class TAG(BASE):
             # IEF_TMS_BatchCreatDeleteResourceTags_118	删除一个资源标签，value字段包含特殊字符%，删除成功
             for v in "*<>\=/|,%":
                 self.assert_result(
-                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_118	删除一个资源标签，value字段包含特殊字符{} ，删除成功".format(v))
+                        comment="# IEF_TMS_BatchCreatDeleteResourceTags_118	删除一个资源标签，value字段包含特殊字符{} ，删除成功".format(
+                                v))
                 code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
                                              tags=[{"key": "q", "value": v}], action="delete")
                 assert code == 204
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_119	删除资源标签，要删除的标签不存在，删除成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_119	删除资源标签，要删除的标签不存在，删除成功
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                         tags=[{"key": "q123" + str(int(time.time())), "value": "value"}],
+                                         action="delete")
+            assert code == 204
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_120	删除资源标签，参数tags列表中为空，删除失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_120	删除资源标签，参数tags列表中为空，删除失败
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=[],
@@ -1007,23 +1059,37 @@ class TAG(BASE):
             code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id, tags=[{"key": "q"}],
                                          action="delEte")
             assert code == 400
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_126	删除资源标签，resource_type和resource_id不一致，删除失败")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_126	删除资源标签，resource_type和resource_id不一致，删除失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_126	删除资源标签，resource_type和resource_id不一致，删除失败
             code, resp = self.batch_tags(resource_type="device", resource_id=node_id, tags=[{"key": "q"}],
                                          action="delete")
             assert code == 404
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_127	删除资源标签，project_id为其他租户的[roject_id，删除失败")
+            self.assert_result(
+                    comment="# IEF_TMS_BatchCreatDeleteResourceTags_127	删除资源标签，project_id为其他租户的[roject_id，删除失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_127	删除资源标签，project_id为其他租户的[roject_id，删除失败
+            tmp_project_id = self.project_id
+            import uuid
+
+            self.project_id = str(uuid.uuid4())
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                         tags=[{"key": "q", "value": "value"}], action="delete")
+            assert code == 401
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_128	删除资源标签，project_id不存在，删除失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_128	删除资源标签，project_id不存在，删除失败
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_129	删除资源标签，请求中带无效token，删除失败")
+            self.project_id = str(uuid.uuid4())
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                         tags=[{"key": "q", "value": "value"}], action="delete")
+            assert code == 401
+            self.project_id = tmp_project_id
+            # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_129	删除资源标签，请求中带无效token，删除失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_129	删除资源标签，请求中带无效token，删除失败
-            self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_130	删除资源标签，请求中不带token，删除失败")
+            # self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_130	删除资源标签，请求中不带token，删除失败")
             # IEF_TMS_BatchCreatDeleteResourceTags_130	删除资源标签，请求中不带token，删除失败
             code, resp = self.get_tags_of_resource(resource_type="edge_node", resource_id=node_id)
             assert code == 200
             tags_num = len(resp["tags"])
-            print resp
+
             if tags_num != 0:
                 for tag in json.loads(resp)["tags"]:
                     k, v = tag["key"], tag["value"]
@@ -1042,6 +1108,10 @@ class TAG(BASE):
             assert code == 204
             self.assert_result(comment="# IEF_TMS_BatchCreatDeleteResourceTags_077	删除资源标签，含有重复的key值，删除成功")
             # IEF_TMS_BatchCreatDeleteResourceTags_077	删除资源标签，含有重复的key值，删除成功
+            code, resp = self.batch_tags(resource_type="edge_node", resource_id=node_id,
+                                         tags=[{"key": "q", "value": "value"}, {"key": "q", "value": "value1"}],
+                                         action="delete")
+            assert code == 204
         except Exception:
             import traceback
             print traceback.print_exc()

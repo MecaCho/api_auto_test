@@ -1,11 +1,22 @@
 # -*-coding=UTF-8-*-
-import requests
 import json
 import os
 import time
+import logging
 from base import BASE
-from common.req import common_request
+# from common.req import common_request
 from log.log import assert_resp
+
+logging.basicConfig(level=logging.INFO,
+                    format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+'''
+logging.basicConfig(level=logging.INFO, filename="node.html", 
+format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+logging.basicConfig(level=logging.INFO, 
+format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+
+'''
+LOG = logging.getLogger(__name__)
 
 
 class Node(BASE):
@@ -47,16 +58,8 @@ class Node(BASE):
         }
         ret = self.req(method="post", path=path, body=node_post)
         return ret.status_code, json.loads(ret.content)
-#     在您的设备上链接华为边缘计算服务，需要执行以下步骤：
-#        1) 请在安装installer之前先安装docker
-#        2) 解压installer
-#        sudo tar -zxvf edge-installer_1.0.2_x86_64.tar.gz -C /opt
-#        3) 解压证书到/opt/IEF/Cert
-#        sudo mkdir -p /opt/IEF/Cert; sudo tar -zxvf qwq-node-0320.tar.gz -C /opt/IEF/Cert
-#        4) 执行安装命令
-#        cd /opt/edge-installer; sudo ./installer -op=install
 
-    def init_node(self, node=None):
+    def init_node(self, node_json=None):
         #     在您的设备上链接华为边缘计算服务，需要执行以下步骤：
         #        1) 请在安装installer之前先安装docker
         #        2) 解压installer
@@ -65,21 +68,21 @@ class Node(BASE):
         #        sudo mkdir -p /opt/IEF/Cert; sudo tar -zxvf qwq-node-0320.tar.gz -C /opt/IEF/Cert
         #        4) 执行安装命令
         #        cd /opt/edge-installer; sudo ./installer -op=install:
-
         # delete node
         os.system("cd /opt/edge-installer; sudo ./installer -op=uninstall")
         # create node and get package
-        with open("node.json", "r") as fp:
-            node = json.load(fp)
-            node = node.get("node")
-            node_id = node.get("id")
-            project_id = node.get("project_id")
-            package = node.get("package")
-            import base64
-            data = base64.b64decode(package)
-            import os
-            os.system("echo {}| base64 -d >> node.tar.gz".format(package))
-            os.system("tar -xzvf node.tar.gz -C /opt/IEF/Cert/")
+        if not node:
+            with open("node.json", "r") as fp:
+                node_json = json.load(fp)
+        node_json = node_json.get("node")
+        node_id = node_json.get("id")
+        project_id = node_json.get("project_id")
+        package = node_json.get("package")
+        import base64
+        data = base64.b64decode(package)
+        print data
+        os.system("echo {}| base64 -d >> node.tar.gz".format(package))
+        os.system("tar -xzvf node.tar.gz -C /opt/IEF/Cert/")
         # precheck install node
         with open("/opt/IEF/Cert/user_config", "r") as c_fp:
             user_config = json.load(c_fp)
@@ -94,14 +97,19 @@ class Node(BASE):
         state = None
         num = 0
         while state != "RUNNING" and num < 610:
-            code, resp = get_node(node_id)
+            self.assert_result(comment=u"# IEF_NODE_QuerryNode 查询节点状态")
+            code, resp = self.get_node(node_id)
             node_json = resp.get("node")
-            if node_json.get("state") != state:
-                state = node_json.get("state")
-                comment = "project_id: {}, node_id: {}, state: {}".format(project_id, node_id, state)
-                LOG.info('<td colspan="7">{}</td>'.format(comment))
+            # if node_json.get("state") != state:
+            state = node_json.get("state")
+            comment = "project_id: {}, node_id: {}, state: {}".format(project_id, node_id, state)
+            LOG.info('<td colspan="7">{}</td>'.format(comment))
             time.sleep(1)
             num += 1
         comment = "Init node successfull."
         LOG.info('<td colspan="7">{}</td>'.format(comment))
 
+
+if __name__ == "__main__":
+    node = Node("project_id", "url.url", "api_version", "pwd", "usr")
+    node.init_node()

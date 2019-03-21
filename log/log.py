@@ -1,4 +1,4 @@
-#-*- coding=UTF-8 -*-
+# -*- coding=UTF-8 -*-
 # import sys
 import os
 import json
@@ -11,12 +11,13 @@ import logging.config
 import ConfigParser
 import sqlite3
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-#logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+# logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
 logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
-#logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left">%(message)s</tr>')
+# logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left">%(message)s</tr>')
 LOG = logging.getLogger(__name__)
 
 
@@ -24,6 +25,7 @@ def method_decorator(func):
     def wrapper(self, *args):
         LOG.info("Add wrapper..")
         return func(self, *args)
+
     return wrapper
 
 
@@ -47,11 +49,13 @@ def assert_resp(*args, **kwargs):
             except Exception as err:
                 ret = "Failed"
                 LOG.error("Check test result failed : {}".format(str(err)))
-            #LOG.info("Expection response code : {}, Real response code :{}, Test Result:{}".format(
+            # LOG.info("Expection response code : {}, Real response code :{}, Test Result:{}".format(
             #        expection_code, code, ret
-            #))
+            # ))
             return resp
+
         return wrapper
+
     return catch_resp
 
 
@@ -62,30 +66,30 @@ def return_api_resp(*args, **kwargs):
         def wrapper(*args, **kwargs):
             resp = None
             try:
-                #LOG.debug("Func name : {2} , args: {0}, kwargs : {1}".format(args, json.dumps(kwargs), func.__name__))
+                # LOG.debug("Func name : {2} , args: {0}, kwargs : {1}".format(args, json.dumps(kwargs), func.__name__))
                 time_satrt = time.time()
                 resp = func(*args, **kwargs)
-                #LOG.info(resp)
+                # LOG.info(resp)
                 time_end = time.time()
                 cost_time = time_end - time_satrt
                 time.sleep(0.5)
                 if kwargs.get("headers"):
                     if kwargs.get("headers").get("X-Auth-Token"):
                         kwargs["headers"].pop("X-Auth-Token")
-                 #       LOG.info(
-                 #               "Func name : {2} , args: {0}, kwargs : {1}".format(args,
-                 #                                                                  json.dumps(kwargs),
-                 #                                                                  func.__name__))
+                        #       LOG.info(
+                        #               "Func name : {2} , args: {0}, kwargs : {1}".format(args,
+                        #                                                                  json.dumps(kwargs),
+                        #                                                                  func.__name__))
                 try:
                     path = kwargs.get("path").split("/v2/")[1]
                 except Exception as err:
                     path = "error"
-                    #LOG.error("Get request path error : {}".format(str(err)))
-                log_dict = {"method": kwargs.get("method"), "path": path, "body": str(kwargs.get("body")),
-                            "cost": cost_time, 
+                    # LOG.error("Get request path error : {}".format(str(err)))
+                log_dict = {"method" : kwargs.get("method"), "path": path, "body": str(kwargs.get("body")),
+                            "cost"   : cost_time,
                             "st_time": time.ctime(time_satrt)}
-#                import pdb
- #               pdb.set_trace()
+                #                import pdb
+                #               pdb.set_trace()
                 if kwargs.get("portion"):
                     log_dict["resp_code"], _ = resp
                 else:
@@ -93,32 +97,35 @@ def return_api_resp(*args, **kwargs):
                         log_dict["resp_code"] = str(resp.status_code)
                     except Exception:
                         log_dict["resp_code"] = resp
-                #LOG.info(
+                # LOG.info(
                 #        "Request method: {method}, path :{path}, resp: {resp_code}, body: {body}, "
                 #        "cost time : {cost}s, start at :{st_time}".format(
                 #                **log_dict))
                 log_dict["expect_code"] = log_dict["resp_code"]
                 log_dict["result"] = "success"
-                msg = '<td>{method}</td><td>{path}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td><td>{body}</td>'.format(**log_dict)
+                msg = '<td>{method}</td><td>{path}</td><td>{cost}</td><td>{resp_code}</td><td>{expect_code}</td><td>{result}</td><td>{body}</td>'.format(
+                        **log_dict)
                 LOG.info('<tr bordercolor="Blue" align="left">{}</tr>'.format(msg))
-                #logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
-                #log = logging.getLogger("test result")
-                #log.info(msg)
+                # logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
+                # log = logging.getLogger("test result")
+                # log.info(msg)
             except Exception as e:
-                #LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
+                # LOG.error("Failed to %s ,ret : %s,  %s: " % (func.__name__, str(resp), str(e)))
                 raise e
             return resp
+
         return wrapper
+
     return catch_api_error
 
 
-def createlog(name=__name__,log_file_name='report.html', debug=[], info=[], warn=[], error=[], fetal=[]):
+def createlog(name=__name__, log_file_name='report.html', debug=[], info=[], warn=[], error=[], fetal=[]):
     try:
         if os.path.getsize(log_file_name) > 1000000:
             os.remove(log_file_name)
     except BaseException:
         pass
-        #LOG.error('txt can not be deleted')
+        # LOG.error('txt can not be deleted')
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     if not logger.handlers:
@@ -139,10 +146,10 @@ def createlog(name=__name__,log_file_name='report.html', debug=[], info=[], warn
 
 def getConfig(section, key):
     config = ConfigParser.ConfigParser()
-    path = os.path.split(os.path.realpath(__file__))[0]+'/fx.conf'
+    path = os.path.split(os.path.realpath(__file__))[0] + '/fx.conf'
     config.read(path)
     try:
-        return config.get(section,key)
+        return config.get(section, key)
     except BaseException as errorMessage:
         createlog('__dbconnect_getConfig__', debug=[errorMessage])
         return
@@ -156,6 +163,7 @@ def test_fun():
         sum += i
         i += 1
     return sum
+
 
 if __name__ == '__main__':
     test_fun()

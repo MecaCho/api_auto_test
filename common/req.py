@@ -22,7 +22,7 @@ def common_request(path, method, body=None, headers=None, portion=None):
     if not headers:
         headers = {"Content-Type": "application/json"}
     ret = None
-#    LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
+    #    LOG.info("Request method: {}, path: {}, body: {}".format(method, path, str(body)))
     if method == "post":
         ret = requests.post(path, headers=headers, verify=False, timeout=5, data=json.dumps(body))
     elif method == "get":
@@ -34,7 +34,7 @@ def common_request(path, method, body=None, headers=None, portion=None):
     code, body = ret.status_code, json.loads(ret.content) if ret.content else None
     if portion:
         return code, body
- #   LOG.info("Request resp code: {0}, body : {1}".format(code, str(body)))
+        #   LOG.info("Request resp code: {0}, body : {1}".format(code, str(body)))
     return ret
 
 
