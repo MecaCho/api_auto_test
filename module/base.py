@@ -37,6 +37,11 @@ class BASE(object):
         self.url_res = RES_URL
         self.url_del_tag = DEL_TAG
 
+    def assert_result(code=None, expect_code=None, comment=""):
+        if code and expect_code:
+            assert code == expect_code
+        LOG.info('<td colspan="7">{}</td>'.format(comment))
+
     def get_res_type(self, resource_type):
         res_dict = {"edge_node": "nodes"}
         return res_dict[resource_type]
