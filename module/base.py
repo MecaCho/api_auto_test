@@ -5,6 +5,9 @@ from common.req import common_request
 from template import token
 from common import iam_client
 
+logging.basicConfig(level=logging.INFO, filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
+LOG = logging.getLogger(__name__)
+
 BASE_URL = "https://{url}/{api_version}"
 NODES = "/{project_id}/edgemgr/nodes"
 NODE = "/{project_id}/edgemgr/nodes/{node_id}"
@@ -37,6 +40,11 @@ class BASE(object):
         self.url_batch_tags = ADD_TAGS
         self.url_res = RES_URL
         self.url_del_tag = DEL_TAG
+
+    def assert_result(code=None, expect_code=None, comment=""):
+        if code and expect_code:
+            assert code == expect_code
+        LOG.info('<td colspan="7">{}</td>'.format(comment))
 
     def get_res_type(self, resource_type):
         res_dict = {"edge_node": "nodes"}

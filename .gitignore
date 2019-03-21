@@ -5,3 +5,4 @@ node.json
 module/*.json
 module/*.gz
 module/*.tar
+module/*.crt

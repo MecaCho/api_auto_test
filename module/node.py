@@ -91,12 +91,13 @@ class Node(BASE):
         state = None
         num = 0
         while state != "RUNNING" and num < 610:
+            self.assert_result(comment="# IEF_NODE_QuerryNode 查询节点状态")
             code, resp = self.get_node(node_id)
             node_json = resp.get("node")
-            if node_json.get("state") != state:
-                state = node_json.get("state")
-                comment = "project_id: {}, node_id: {}, state: {}".format(project_id, node_id, state)
-                LOG.info('<td colspan="7">{}</td>'.format(comment))
+            #if node_json.get("state") != state:
+            state = node_json.get("state")
+            comment = "project_id: {}, node_id: {}, state: {}".format(project_id, node_id, state)
+            LOG.info('<td colspan="7">{}</td>'.format(comment))
             time.sleep(1)
             num += 1
         comment = "Init node successfull."

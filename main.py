@@ -55,6 +55,9 @@ if __name__ == '__main__':
                     usr=usr, pwd=pwd, project_id=project_id,
                     url=url, api_version=api_version)
             client.list_nodes()
+            LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
+            client.create_node(name="qwq-test-node")
+            LOG.info('<td colspan="7">{}</td>'.format("Installing a node."))
             client.init_node()
             #client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
             #client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
