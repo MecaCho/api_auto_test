@@ -1,0 +1,9 @@
+如果我们希望把字符串自动换行，就需要加入下面的代码：
+<style> 
+ table { table-layout:fixed; word-break: break-all; word-wrap: break-word;}  
+</style>
+其中table-layout:fixed 表示：列宽由表格宽度和列宽度设定。在固定表格布局中，水平布局仅取决于表格宽度、列宽度、表格边框宽度、单元格间距，而与单元格的内容无关。
+
+其中word-break:break-all 表示：word-break 属性规定自动换行的处理方法。break-all允许在单词内换行。
+
+其中word-wrap: break-word 表示：word-wrap 属性允许长单词或 URL 地址换行到下一行。break-word就表示在长单词或 URL 地址内部进行换行
