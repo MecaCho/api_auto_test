@@ -16,6 +16,11 @@
                 "ief_url":"ief2.cn-south-1.myhuaweicloud.com",
                 "api_version":"v2",
                 "project_id":"5f5ee5f0463046ecad0930cdb3d4fd7d"
+            },
+            {
+                "ief_url":"ief2.cn-south-1.myhuaweicloud.com",
+                "api_version":"v2",
+                "project_id": "101e1cebb49447838e3683ab9fe6e752"
             }
         ]
     }
