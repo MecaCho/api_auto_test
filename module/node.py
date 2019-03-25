@@ -50,13 +50,18 @@ class Node(BASE):
     @assert_resp(True, expection_code=201)
     def create_node(self, name=None):
         path = self.url_nodes.format(project_id=self.project_id)
+        now = str(int(time.time()))
         if not name:
             name = str(int(time.time()))
+        else:
+            name = name+now
         node_post = {
+            "node": {
             "name": name,
             "description": "This is a test node."
-        }
+        }}
         ret = self.req(method="post", path=path, body=node_post)
+        print ret.status_code, ret.content
         return ret.status_code, json.loads(ret.content)
 
     def init_node(self, node_json=None):
@@ -71,7 +76,7 @@ class Node(BASE):
         # delete node
         os.system("cd /opt/edge-installer; sudo ./installer -op=uninstall")
         # create node and get package
-        if not node:
+        if not node_json:
             with open("node.json", "r") as fp:
                 node_json = json.load(fp)
         node_json = node_json.get("node")

@@ -1,6 +1,7 @@
 import json
 import sys
 
+import logging
 sys.path.append("..")
 from common.req import common_request
 from template import token

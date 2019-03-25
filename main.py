@@ -61,9 +61,10 @@ if __name__ == '__main__':
                     url=url, api_version=api_version)
             client.list_nodes()
             LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
-            client.create_node(name="qwq-test-node")
+            code, node_json = client.create_node(name="qwq-test-node")
+            assert code == 201
             LOG.info('<td colspan="7">{}</td>'.format("Installing a node."))
-            client.init_node()
+            client.init_node(node_json)
             # client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
             # client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
             # print "0"*100
