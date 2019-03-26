@@ -3,9 +3,9 @@
         "user":"qiuwenqi",
         "regions":[
             {
-                "ief_url":"ief.cn-south-1.myhuaweicloud.com",
+                "ief_url":"ief2.cn-north-1.myhuaweicloud.com",
                 "api_version":"v2",
-                "project_id":"5f5ee5f0463046ecad0930cdb3d4fd7d"
+                "project_id": "c3b4a9da5ba24620bb8d3d67027db04c"
             }
         ]
     }

@@ -38,6 +38,7 @@ if __name__ == '__main__':
     regions = read_config()
     users = read_config()
     #    init_report()
+    t_case_name = sys.argv[1]
     for user_info in users:
         usr = user_info.get("user")
         pwd = getpass.getpass("please input user {} password : ".format(usr))
@@ -50,7 +51,7 @@ if __name__ == '__main__':
             with open("report.html", "w") as fp:
                 fp.write("")
             api_version = region["api_version"]
-            LOG.info('<h1 class="center"<nobr>IEF TMS API Auto Test Result Report ({})</nobr></h1>'.format(url))
+            LOG.info('<h1 class="center"<nobr>IEF {} API Auto Test Result Report ({})</nobr></h1>'.format(t_case_name, url))
             LOG.info('<table bordercolor="Blue" width="1200" align="left" cellspacing="0" border="1">')
             LOG.info('<style>table { table-layout:fixed; word-wrap: break-word;}</style>')
 
@@ -63,6 +64,9 @@ if __name__ == '__main__':
             LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
             code, node_json = client.create_node(name="qwq-test-node")
             assert code == 201
+            #with open("qwq-test-node1553566682.json", "r") as fp:
+            #    node_json = json.load(fp)
+            print str(node_json)
             LOG.info('<td colspan="7">{}</td>'.format("Installing a node."))
             client.init_node(node_json)
             # client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
@@ -73,4 +77,4 @@ if __name__ == '__main__':
             # client.test_batch_tags()
             LOG.info("</table><br></br>\n<br></br>\n<br></br>")
             LOG.info("</body></html>")
-            os.system("mv report.html {}_TMS_report.html".format(file_name))
+            os.system("mv report.html {}_{}_report.html".format(file_name, t_case_name))

@@ -60,8 +60,11 @@ class Node(BASE):
             "name": name,
             "description": "This is a test node."
         }}
+        print path
         ret = self.req(method="post", path=path, body=node_post)
         print ret.status_code, ret.content
+        with open(name+".json", "w") as fp:
+            fp.write(ret.content)
         return ret.status_code, json.loads(ret.content)
 
     def init_node(self, node_json=None):
@@ -86,7 +89,7 @@ class Node(BASE):
         import base64
         data = base64.b64decode(package)
         print data
-        os.system("echo {}| base64 -d >> node.tar.gz".format(package))
+        os.system("rm -rf node.tar.gz;echo {}| base64 -d >> node.tar.gz".format(package))
         os.system("tar -xzvf node.tar.gz -C /opt/IEF/Cert/")
         # precheck install node
         with open("/opt/IEF/Cert/user_config", "r") as c_fp:
