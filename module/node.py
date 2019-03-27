@@ -41,13 +41,13 @@ class Node(BASE):
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
-    @assert_resp(True, expection_code=204, comment="# IEF_NODE_DeleteNode 删除节点")
+    #@assert_resp(True, expection_code=204, comment="# IEF_NODE_DeleteNode 删除节点")
     def delete_node(self, node_id):
         path = self.url_node.format(project_id=self.project_id, node_id=node_id)
         ret = self.req(method="delete", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
-    @assert_resp(True, expection_code=201, comment="# IEF_NODE_CreateNode 创建节点")
+    #@assert_resp(True, expection_code=201, comment="# IEF_NODE_CreateNode 创建节点")
     def create_node(self, name=None):
         path = self.url_nodes.format(project_id=self.project_id)
         now = str(int(time.time()))

@@ -14,6 +14,8 @@ LOG = logging.getLogger(__name__)
 BASE_URL = "https://{url}/{api_version}"
 NODES = "/{project_id}/edgemgr/nodes"
 NODE = "/{project_id}/edgemgr/nodes/{node_id}"
+NODE_CERTS = "/{project_id}/edgemgr/nodes/{node_id}/certs"
+NODE_CERT = "/{project_id}/edgemgr/nodes/{node_id}/certs/{cert_id}"
 
 QUERY_INS = "/{project_id}/ief-{resource_type}/resource_instances/action"
 ADD_TAG = "/{project_id}/ief-{resource_type}/{resource_id}/tags"
@@ -36,6 +38,8 @@ class BASE(object):
         self.headers = None
         self.url_nodes = NODES
         self.url_node = NODE
+        self.node_certs = NODE_CERTS
+        self.node_cert = NODE_CERT
         self.url_query_ins_by_tag = QUERY_INS
         self.url_add_tag = ADD_TAG
         self.url_tags = ADD_TAG
