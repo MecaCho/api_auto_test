@@ -16,7 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td colspan="7">%(asctime)s-%(message)s</td></tr>')
-logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
+logging.basicConfig(level=logging.INFO, filename="report.html", format='%(message)s')
 # logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left">%(message)s</tr>')
 LOG = logging.getLogger(__name__)
 
@@ -32,6 +32,7 @@ def method_decorator(func):
 def assert_resp(*args, **kwargs):
     expection_code = kwargs.get("expection_code", None)
     partion = args[0] if args[0] else None
+    comment = kwargs.get("comment")
 
     def catch_resp(func):
         def wrapper(*args, **kwargs):
@@ -49,6 +50,8 @@ def assert_resp(*args, **kwargs):
             except Exception as err:
                 ret = "Failed"
                 LOG.error("Check test result failed : {}".format(str(err)))
+            if comment:
+                LOG.info('<td colspan="7">{}</td>'.format(comment))
             # LOG.info("Expection response code : {}, Real response code :{}, Test Result:{}".format(
             #        expection_code, code, ret
             # ))

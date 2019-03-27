@@ -29,25 +29,25 @@ class Node(BASE):
         self.pwd = pwd
         self.usr = usr
 
-    @assert_resp(True, expection_code=200)
+    @assert_resp(True, expection_code=200, comment="# IEF_NODE_ListNodes 查询节点列表")
     def list_nodes(self):
         path = self.url_nodes.format(project_id=self.project_id)
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
-    @assert_resp(True, expection_code=200)
+    @assert_resp(True, expection_code=200, comment="# IEF_NODE_QuerryNode 查询节点状态")
     def get_node(self, node_id):
         path = self.url_node.format(project_id=self.project_id, node_id=node_id)
         ret = self.req(method="get", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
-    @assert_resp(True, expection_code=204)
+    @assert_resp(True, expection_code=204, comment="# IEF_NODE_DeleteNode 删除节点")
     def delete_node(self, node_id):
         path = self.url_node.format(project_id=self.project_id, node_id=node_id)
         ret = self.req(method="delete", path=path, body=None)
         return ret.status_code, json.loads(ret.content)
 
-    @assert_resp(True, expection_code=201)
+    @assert_resp(True, expection_code=201, comment="# IEF_NODE_CreateNode 创建节点")
     def create_node(self, name=None):
         path = self.url_nodes.format(project_id=self.project_id)
         now = str(int(time.time()))
@@ -105,7 +105,7 @@ class Node(BASE):
         state = None
         num = 0
         while state != "RUNNING" and num < 610:
-            self.assert_result(comment=u"# IEF_NODE_QuerryNode 查询节点状态")
+            #self.assert_result(comment=u"# IEF_NODE_QuerryNode 查询节点状态")
             code, resp = self.get_node(node_id)
             node_json = resp.get("node")
             # if node_json.get("state") != state:

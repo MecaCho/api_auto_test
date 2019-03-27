@@ -3,6 +3,7 @@ import os
 import sys
 import getpass
 import logging
+import time
 
 from log.log import return_api_resp
 from module import tag, node
@@ -61,14 +62,14 @@ if __name__ == '__main__':
                     usr=usr, pwd=pwd, project_id=project_id,
                     url=url, api_version=api_version)
             client.list_nodes()
-            LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
-            code, node_json = client.create_node(name="qwq-test-node")
-            assert code == 201
+            #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
+            #code, node_json = client.create_node(name="qwq-test-node")
+            #assert code == 201
             #with open("qwq-test-node1553566682.json", "r") as fp:
             #    node_json = json.load(fp)
-            print str(node_json)
-            LOG.info('<td colspan="7">{}</td>'.format("Installing a node."))
-            client.init_node(node_json)
+            #print str(node_json)
+            #LOG.info('<td colspan="7">{}</td>'.format("Installing a node."))
+            #client.init_node(node_json)
             # client = tag.TAG(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
             # client.query_ins(resource_type="edge_node", action="filter", tags=[{"key": "qwq", "values": []}])
             # print "0"*100
@@ -77,4 +78,5 @@ if __name__ == '__main__':
             # client.test_batch_tags()
             LOG.info("</table><br></br>\n<br></br>\n<br></br>")
             LOG.info("</body></html>")
-            os.system("mv report.html {}_{}_report.html".format(file_name, t_case_name))
+            now = str(int(time.time()))
+            os.system("mv report.html {}_{}_report_{}.html".format(file_name, t_case_name, now))
