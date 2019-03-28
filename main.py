@@ -63,8 +63,8 @@ if __name__ == '__main__':
                     url=url, api_version=api_version)
             client.list_nodes()
             #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
-            #code, node_json = client.create_node(name="qwq-test-node")
-            #assert code == 201
+            code, node_json = client.create_node(name="qwq-test-node")
+            assert code == 201
             #with open("qwq-test-node1553566682.json", "r") as fp:
             #    node_json = json.load(fp)
             #print str(node_json)

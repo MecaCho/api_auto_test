@@ -29,44 +29,6 @@ class Node(BASE):
         self.pwd = pwd
         self.usr = usr
 
-    @assert_resp(True, expection_code=200, comment="# IEF_NODE_ListNodes 查询节点列表")
-    def list_nodes(self):
-        path = self.url_nodes.format(project_id=self.project_id)
-        ret = self.req(method="get", path=path, body=None)
-        return ret.status_code, json.loads(ret.content)
-
-    @assert_resp(True, expection_code=200, comment="# IEF_NODE_QuerryNode 查询节点状态")
-    def get_node(self, node_id):
-        path = self.url_node.format(project_id=self.project_id, node_id=node_id)
-        ret = self.req(method="get", path=path, body=None)
-        return ret.status_code, json.loads(ret.content)
-
-    #@assert_resp(True, expection_code=204, comment="# IEF_NODE_DeleteNode 删除节点")
-    def delete_node(self, node_id):
-        path = self.url_node.format(project_id=self.project_id, node_id=node_id)
-        ret = self.req(method="delete", path=path, body=None)
-        return ret.status_code, json.loads(ret.content)
-
-    #@assert_resp(True, expection_code=201, comment="# IEF_NODE_CreateNode 创建节点")
-    def create_node(self, name=None):
-        path = self.url_nodes.format(project_id=self.project_id)
-        now = str(int(time.time()))
-        if not name:
-            name = str(int(time.time()))
-        else:
-            name = name+now
-        node_post = {
-            "node": {
-            "name": name,
-            "description": "This is a test node."
-        }}
-        print path
-        ret = self.req(method="post", path=path, body=node_post)
-        print ret.status_code, ret.content
-        with open(name+".json", "w") as fp:
-            fp.write(ret.content)
-        return ret.status_code, json.loads(ret.content)
-
     def init_node(self, node_json=None):
         #     在您的设备上链接华为边缘计算服务，需要执行以下步骤：
         #        1) 请在安装installer之前先安装docker

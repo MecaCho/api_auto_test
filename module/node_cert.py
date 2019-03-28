@@ -27,13 +27,15 @@ class NodeCert(BASE):
             assert code == expect_code
         LOG.info('<td colspan="7">{}</td>'.format(comment))
 
+    def create_node_cert(self, node_id, name=None, description="edge_node_value0", type_cert="device", del_key=None):
 
-    def create_node_cert(self, node_id, name="edge_node_cert", description="edge_node_value0", type="device"):
         data_post = {
             "name": name,
             "description": description,
-            "type": type
+            "type": type_cert
         }
+        if del:
+            data_post.pop(del_key, None)
         path = self.node_certs.format(
                 project_id=self.project_id, node_id=node_id)
         ret = self.req(method="post", path=path, body=data_post)
@@ -52,50 +54,106 @@ class NodeCert(BASE):
         ret = self.req(method="delete", path=path, body=None)
         return ret.status_code, json.loads(ret.content) if ret.content else None
 
-
     def test_create_node_cert(self):
+        code, node = self.create_node(name="test_ode_cert")
+        assert code == 201
+        node_id = node.get("node").get("id")
         # #         Depth	特性_名称	测试用例_编号	测试用例_名称	测试预期结果（返回码保持一致）	测试结果
         # ..	创建节点证书	 IEF_NODE_CERT_CreateNodeCert	POST /{version}/{project_id}/edgemgr/nodes/{node_id}/certs
         # 	节点证书名称检验	 IEF_NODE_CERT_CreateNodeCertCount_001	创建一个节点证书，证书名称name为null，创建失败	201
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_001	创建一个节点证书，证书名称name为null，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name=None)
+        assert code == 400
         # 		IEF_NODE_CERT_CreateNodeCertCount_002	创建一个节点证书，证书名称name为"null"，创建成功	201
-        self.assert_result(comment="# IEF_TMS_QuerryResourceInstanceFilter_001	请求体中带所有必选参数，查询实例成功")
-        code, response = self.create_node_cert(node_id=)
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_002	创建一个节点证书，证书名称name为'null'，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="null")
         assert code == 201
-# 		IEF_NODE_CERT_CreateNodeCertCount_003	创建一个节点证书，证书名称name为空，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_004	创建一个节点证书，证书名称name为空格，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_005	创建一个节点证书，证书名称name长度为1，创建成功	201
-# 		IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功	201
-# 		IEF_NODE_CERT_CreateNodeCertCount_007	创建一个节点证书，证书名称name长度为64(前面含有空格)，创建成功	201
-# 		IEF_NODE_CERT_CreateNodeCertCount_008	创建一个节点证书，证书名称name长度为64(中间含有空格)，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_009	创建一个节点证书，证书名称name长度为65，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_010	创建一个节点证书，证书名称name字段缺失，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_011	创建一个节点证书，证书名称name为“AAaa00-99_中”字符，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_012	创建一个节点证书，证书名称name字段包含非打印字符ASCII（0~31），创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_013	创建一个节点证书，证书名称name字段包含特殊字符*，创建失败	400
-# 		IEF_NODE_CERT_CreateNodeCertCount_014	创建一个节点证书，证书名称name字段包含特殊字符<，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_015	创建一个节点证书，证书名称name字段包含特殊字符>，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_016	创建一个节点证书，证书名称name字段包含特殊字符\，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_017	创建一个节点证书，证书名称name字段包含特殊字符=，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_018	创建一个节点证书，证书名称name字段包含特殊字符/，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_019	创建一个节点证书，证书名称name字段包含特殊字符|，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_020	创建一个节点证书，证书名称name字段包含特殊字符","，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_021	创建一个节点证书，证书名称name字段包含特殊字符$，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_022	创建一个节点证书，证书名称name字段包含特殊字符&，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_023	创建一个节点证书，证书名称name字段包含特殊字符%，创建失败	400
-# 	节点证书类型检验	 IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为null，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_025	创建一个节点证书，证书证书类型type为"null"，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_026	创建一个节点证书，证书证书类型type为空，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_027	创建一个节点证书，证书证书类型type为空格，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_028	创建一个节点证书，证书证书类型type为device，创建成功	201
-# 		 IEF_NODE_CERT_CreateNodeCertCount_029	创建一个节点证书，证书证书类型type为application，创建成功	201
-# 		 IEF_NODE_CERT_CreateNodeCertCount_030	创建节点证书，type值为DEVICE，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_031	创建节点证书，type值为Device，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_032	创建节点证书，type值为APPLICATION，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_033	创建节点证书，type值为Application，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_034	创建节点证书，type值为*，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_035	创建节点证书，type值为0，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_036	创建节点证书，type值为#，创建失败	400
-# 		 IEF_NODE_CERT_CreateNodeCertCount_037	创建节点证书，type值为node，创建失败	400
+        # 		IEF_NODE_CERT_CreateNodeCertCount_003	创建一个节点证书，证书名称name为空，创建失败	400
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_003	创建一个节点证书，证书名称name为空，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="")
+        assert code == 400
+        # 		IEF_NODE_CERT_CreateNodeCertCount_004	创建一个节点证书，证书名称name为空格，创建失败	400
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_004	创建一个节点证书，证书名称name为空格，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name=" ")
+        assert code == 400
+        # IEF_NODE_CERT_CreateNodeCertCount_005	创建一个节点证书，证书名称name长度为1，创建成功	201
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_005	创建一个节点证书，证书名称name长度为1，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="q")
+        assert code == 201
+        # IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功	201
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="q"*64)
+        assert code == 201
+        # IEF_NODE_CERT_CreateNodeCertCount_007	创建一个节点证书，证书名称name长度为64(前面含有空格)，创建成功	201
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_007	创建一个节点证书，证书名称name长度为64(前面含有空格)，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="  "+"q" * 64)
+        assert code == 201
+        # IEF_NODE_CERT_CreateNodeCertCount_008	创建一个节点证书，证书名称name长度为64(中间含有空格)，创建失败	400
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_008	创建一个节点证书，证书名称name长度为64(中间含有空格)，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="q" * 32+" "+"q"*31)
+        assert code == 400
+        # IEF_NODE_CERT_CreateNodeCertCount_009	创建一个节点证书，证书名称name长度为65，创建失败	400
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_009	创建一个节点证书，证书名称name长度为65，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="q" * 65)
+        assert code == 400
+        # IEF_NODE_CERT_CreateNodeCertCount_010	创建一个节点证书，证书名称name字段缺失，创建失败	400
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_010	创建一个节点证书，证书名称name字段缺失，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, del_key="name")
+        assert code == 400
+        # 		IEF_NODE_CERT_CreateNodeCertCount_011	创建一个节点证书，证书名称name为“AAaa00-99_中”字符，创建失败	400
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_011	创建一个节点证书，证书名称name为“AAaa00-99_中”字符，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="AAaa00-99_中")
+        assert code == 400
+        # # 		IEF_NODE_CERT_CreateNodeCertCount_012	创建一个节点证书，证书名称name字段包含非打印字符ASCII（0~31），创建失败	400
+        #     self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功")
+        #     code, response = self.create_node_cert(node_id=node_id, name="q" * 64)
+        #     assert code == 201
+        # 		IEF_NODE_CERT_CreateNodeCertCount_013	创建一个节点证书，证书名称name字段包含特殊字符*，创建失败	400
+        # 		IEF_NODE_CERT_CreateNodeCertCount_014	创建一个节点证书，证书名称name字段包含特殊字符<，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_015	创建一个节点证书，证书名称name字段包含特殊字符>，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_016	创建一个节点证书，证书名称name字段包含特殊字符\，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_017	创建一个节点证书，证书名称name字段包含特殊字符=，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_018	创建一个节点证书，证书名称name字段包含特殊字符/，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_019	创建一个节点证书，证书名称name字段包含特殊字符|，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_021	创建一个节点证书，证书名称name字段包含特殊字符$，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_022	创建一个节点证书，证书名称name字段包含特殊字符&，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_023	创建一个节点证书，证书名称name字段包含特殊字符%，创建失败	400
+        for k in "*<>\=/|$&%":
+            self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_023	创建一个节点证书，证书名称name字段包含特殊字符{}，创建失败".format(k))
+            code, response = self.create_node_cert(node_id=node_id, name="test"+k)
+            assert code == 400
+        # 	节点证书类型检验	 IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为null，创建失败	400
+        fake_cert_name = str(uuid.uuid4())
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为null，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert=None)
+        assert code == 400
+
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_025	创建一个节点证书，不带证书类型type，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", del_key="type")
+        assert code == 400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_025	创建一个节点证书，证书证书类型type为"null"，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_026	创建一个节点证书，证书证书类型type为空，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_027	创建一个节点证书，证书证书类型type为空格，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_028	创建一个节点证书，证书证书类型type为device，创建成功	201
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_028	创建一个节点证书，证书证书类型type为device，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert="device")
+        assert code == 201
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_029	创建一个节点证书，证书证书类型type为application，创建成功	201
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_029	创建一个节点证书，证书证书类型type为application，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert="application")
+        assert code == 201
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_030	创建节点证书，type值为DEVICE，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_031	创建节点证书，type值为Device，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_032	创建节点证书，type值为APPLICATION，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_033	创建节点证书，type值为Application，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_034	创建节点证书，type值为*，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_035	创建节点证书，type值为0，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_036	创建节点证书，type值为#，创建失败	400
+        # 		 IEF_NODE_CERT_CreateNodeCertCount_037	创建节点证书，type值为node，创建失败	400
+        for value in ["null", None, "", " ", "DEVICE", "Device", "APPLICATION", "Application", "*", 0, "#", "node"]:
+            self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为{}，创建失败".format(value))
+            code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert=value)
+            assert code == 400
 # 	节点证书描述校验	IEF_NODE_CERT_CreateNodeCertCount_038	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_039	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_040	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
@@ -107,6 +165,10 @@ class NodeCert(BASE):
 # 		IEF_NODE_CERT_CreateNodeCertCount_046	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_047	创建一个节点证书，证书名称description字段包含中文字符，创建成功	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_048	创建一个节点证书，证书名称description字段包含英文字符，创建成功	400
+        for value in "*<>\=/|$&%":
+            self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_039	创建一个节点证书，证书名称description字段包含特殊字符{}，创建失败".format(value))
+            code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert="device", description="This is a node cert test."+value)
+            assert code == 400
 # 	节点证书配额校验	IEF_NODE_CERT_CreateNodeCertCount_049	创建1个节点证书，创建成功	201
 # 		IEF_NODE_CERT_CreateNodeCertCount_050	创建9个节点证书，创建成功	201
 # 		IEF_NODE_CERT_CreateNodeCertCount_051	创建10个节点证书，创建成功	201
@@ -169,7 +231,6 @@ class NodeCert(BASE):
         # self.assert_result(comment="# TC_NODE_CERT_ListNodeCerts_001	查询节点证书，请求中node_id不存在，查询失败")
         # code, response = self.get_node_certs(node_id="xxxxx")
         # assert code == 400
-
 
     def test_delete_node_cert(self):
         nodes = self.list_ress(resource_type="nodes")
