@@ -34,7 +34,7 @@ class NodeCert(BASE):
             "description": description,
             "type": type_cert
         }
-        if del:
+        if del_key:
             data_post.pop(del_key, None)
         path = self.node_certs.format(
                 project_id=self.project_id, node_id=node_id)
@@ -68,6 +68,20 @@ class NodeCert(BASE):
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_002	创建一个节点证书，证书名称name为'null'，创建成功")
         code, response = self.create_node_cert(node_id=node_id, name="null")
         assert code == 201
+
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_067	创建一个节点证书，证书名称name重名，创建失败")
+        code, response = self.create_node_cert(node_id=node_id, name="null")
+        assert code == 400
+
+        node_cert_id = response.get("id")
+        self.assert_result(comment="TC_NODE_CERT_DeleteNodeCerts_012, 删除一个节点证书，带正确id， 删除成功")
+        code, response = self.delete_node_cert(cert_id=node_cert_id, node_id=node_id)
+        assert code == 204
+
+        self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_068	创建一个节点证书，证书名称与已经删除的证书name重名，创建成功")
+        code, response = self.create_node_cert(node_id=node_id, name="null")
+        assert code == 201
+
         # 		IEF_NODE_CERT_CreateNodeCertCount_003	创建一个节点证书，证书名称name为空，创建失败	400
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_003	创建一个节点证书，证书名称name为空，创建失败")
         code, response = self.create_node_cert(node_id=node_id, name="")
@@ -80,30 +94,37 @@ class NodeCert(BASE):
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_005	创建一个节点证书，证书名称name长度为1，创建成功")
         code, response = self.create_node_cert(node_id=node_id, name="q")
         assert code == 201
+
         # IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功	201
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功")
         code, response = self.create_node_cert(node_id=node_id, name="q"*64)
         assert code == 201
+
         # IEF_NODE_CERT_CreateNodeCertCount_007	创建一个节点证书，证书名称name长度为64(前面含有空格)，创建成功	201
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_007	创建一个节点证书，证书名称name长度为64(前面含有空格)，创建成功")
         code, response = self.create_node_cert(node_id=node_id, name="  "+"q" * 64)
         assert code == 201
+
         # IEF_NODE_CERT_CreateNodeCertCount_008	创建一个节点证书，证书名称name长度为64(中间含有空格)，创建失败	400
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_008	创建一个节点证书，证书名称name长度为64(中间含有空格)，创建失败")
         code, response = self.create_node_cert(node_id=node_id, name="q" * 32+" "+"q"*31)
         assert code == 400
+
         # IEF_NODE_CERT_CreateNodeCertCount_009	创建一个节点证书，证书名称name长度为65，创建失败	400
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_009	创建一个节点证书，证书名称name长度为65，创建失败")
         code, response = self.create_node_cert(node_id=node_id, name="q" * 65)
         assert code == 400
+
         # IEF_NODE_CERT_CreateNodeCertCount_010	创建一个节点证书，证书名称name字段缺失，创建失败	400
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_010	创建一个节点证书，证书名称name字段缺失，创建失败")
         code, response = self.create_node_cert(node_id=node_id, del_key="name")
         assert code == 400
+
         # 		IEF_NODE_CERT_CreateNodeCertCount_011	创建一个节点证书，证书名称name为“AAaa00-99_中”字符，创建失败	400
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_011	创建一个节点证书，证书名称name为“AAaa00-99_中”字符，创建失败")
         code, response = self.create_node_cert(node_id=node_id, name="AAaa00-99_中")
         assert code == 400
+
         # # 		IEF_NODE_CERT_CreateNodeCertCount_012	创建一个节点证书，证书名称name字段包含非打印字符ASCII（0~31），创建失败	400
         #     self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_006	创建一个节点证书，证书名称name长度为64，创建成功")
         #     code, response = self.create_node_cert(node_id=node_id, name="q" * 64)
@@ -122,6 +143,7 @@ class NodeCert(BASE):
             self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_023	创建一个节点证书，证书名称name字段包含特殊字符{}，创建失败".format(k))
             code, response = self.create_node_cert(node_id=node_id, name="test"+k)
             assert code == 400
+
         # 	节点证书类型检验	 IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为null，创建失败	400
         fake_cert_name = str(uuid.uuid4())
         self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为null，创建失败")
@@ -154,6 +176,7 @@ class NodeCert(BASE):
             self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_024	创建一个节点证书，证书类型type为{}，创建失败".format(value))
             code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert=value)
             assert code == 400
+
 # 	节点证书描述校验	IEF_NODE_CERT_CreateNodeCertCount_038	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_039	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_040	创建一个节点证书，证书名称description字段包含特殊字符*，创建失败	400
@@ -169,6 +192,7 @@ class NodeCert(BASE):
             self.assert_result(comment="IEF_NODE_CERT_CreateNodeCertCount_039	创建一个节点证书，证书名称description字段包含特殊字符{}，创建失败".format(value))
             code, response = self.create_node_cert(node_id=node_id, name="test-node-cert", type_cert="device", description="This is a node cert test."+value)
             assert code == 400
+
 # 	节点证书配额校验	IEF_NODE_CERT_CreateNodeCertCount_049	创建1个节点证书，创建成功	201
 # 		IEF_NODE_CERT_CreateNodeCertCount_050	创建9个节点证书，创建成功	201
 # 		IEF_NODE_CERT_CreateNodeCertCount_051	创建10个节点证书，创建成功	201
@@ -187,8 +211,36 @@ class NodeCert(BASE):
 # 		IEF_NODE_CERT_CreateNodeCertCount_064	创建节点证书，请求中project_id不存在，创建失败	400
 # 		IEF_NODE_CERT_CreateNodeCertCount_065	创建节点证书，请求中node_id缺失，创建失败	404
 # 		IEF_NODE_CERT_CreateNodeCertCount_066	创建节点证书，请求中不带token，创建失败	401
-#
-#
+
+        self.assert_result(comment="TC_NODE_CERT_DeleteNodeCerts_001	删除节点证书，请求中node_id不存在，删除失败")
+        code, response = self.delete_node_cert(node_id="xxxxx", cert_id=node_cert_id)
+        assert code == 404
+        # 		TC_NODE_CERT_DeleteNodeCerts_002	删除节点证书，请求中node_id为其他project节点id，删除失败	404
+        fake_node_id = str(uuid.uuid4())
+        self.assert_result(comment="TC_NODE_CERT_DeleteNodeCerts_002	删除节点证书，请求中node_id为其他project节点id，删除失败")
+        code, response = self.delete_node_cert(node_id=fake_node_id, cert_id=node_cert_id)
+        assert code == 404
+        # 		TC_NODE_CERT_DeleteNodeCerts_003	删除节点证书，请求中project_id缺失，删除失败	400
+        # 		TC_NODE_CERT_DeleteNodeCerts_004	删除节点证书，请求中project_id为其他租户的project_id，删除失败	400
+        # 		TC_NODE_CERT_DeleteNodeCerts_005	删除节点证书，请求中project_id不存在，删除失败	400
+        # 		TC_NODE_CERT_DeleteNodeCerts_006	删除节点证书，请求中node_id缺失，删除失败	404
+        self.assert_result(comment="TC_NODE_CERT_DeleteNodeCerts_006	删除节点证书，请求中node_id缺失，删除失败")
+        code, response = self.delete_node_cert(node_id="", cert_id=node_cert_id)
+        assert code == 404
+        # 		TC_NODE_CERT_DeleteNodeCerts_007	删除节点证书，请求中不带token，删除失败	401
+        # 		TC_NODE_CERT_DeleteNodeCerts_008	删除节点证书，请求中带无效token，删除失败	401
+        # 		TC_NODE_CERT_DeleteNodeCerts_009	删除节点证书，请求中cert_id不存在，删除失败	404
+        self.assert_result(comment="# TC_NODE_CERT_DeleteNodeCerts_009	删除节点证书，请求中cert_id不存在，删除失败")
+        code, response = self.delete_node_cert(node_id=node_id, cert_id=fake_node_id)
+        assert code == 404
+        # 		TC_NODE_CERT_DeleteNodeCerts_010	删除节点证书，请求中cert_id为其他project，删除失败	404
+        self.assert_result(comment="TC_NODE_CERT_DeleteNodeCerts_010	删除节点证书，请求中cert_id为其他project，删除失败")
+        code, response = self.delete_node_cert(node_id=node_id, cert_id=fake_node_id)
+        assert code == 404
+        # 		TC_NODE_CERT_DeleteNodeCerts_011	删除节点证书，请求中cert_id为其他node，删除失败	404
+        self.assert_result(comment="# TC_NODE_CERT_DeleteNodeCerts_011	删除节点证书，请求中cert_id为其他node，删除失败")
+        code, response = self.delete_node_cert(node_id=node_id, cert_id=fake_node_id)
+        assert code == 404
 
     def test_list_node_certs(self):
         nodes = self.list_ress(resource_type="nodes")
