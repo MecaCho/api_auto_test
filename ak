@@ -1,0 +1,19 @@
+{
+    "auth":{
+        "scope":{
+            "project":{
+                "id":""
+            }
+        },
+        "identity":{
+            "assume_role":{
+                "xrole_name":"ief_admin_trust",
+                "duration-seconds":900,
+                "domain_id":""
+            },
+            "methods":[
+                "assume_role"
+            ]
+        }
+    }
+}
