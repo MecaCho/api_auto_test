@@ -86,4 +86,4 @@ class Deployment(BASE):
         return ret.status_code, json.loads(ret.content) if ret.content else None
 
     def put_deployment_with_configmap(self, id=None):
-        self.put_deployment(id=id, volumes=volume.configmaps)
+        return self.put_deployment(id=id, volumes=volume.configmaps)
