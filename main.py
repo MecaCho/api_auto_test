@@ -6,7 +6,7 @@ import logging
 import time
 
 from log.log import return_api_resp
-from module import tag, node, configs
+from module import tag, node, configs, deployment
 
 # logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td>%(message)s</td></tr>')
 logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
@@ -61,13 +61,18 @@ if __name__ == '__main__':
             #client = node.Node(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
             client = configs.ConfigMap(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
             #client.list_nodes()
-            client.multi_delete() 
-            time.sleep(1)
-            client.multi_post() 
-            code, config_json = client.create_configmap(name="test-1234")
-            print code, config_json
-            assert code == 201
-            print str(config_json)
+
+            deployment = deployment.Deployment(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
+            deployment.put_deployment(id="35c8e0f5-286a-4d17-b148-6b944c40f920")
+
+            client.multi_delete()
+
+            client.multi_post()
+
+            deployment.put_deployment_with_configmap(id="35c8e0f5-286a-4d17-b148-6b944c40f920")
+
+
+
             #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
             #code, node_json = client.create_node(name="qwq-test-node")
             #assert code == 201

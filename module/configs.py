@@ -73,6 +73,7 @@ class ConfigMap(BASE):
         for id in id_list:
             t = threading.Thread(target=self.delete_configmap, args=(id,))
             t.start()
+            t.join(timeout=5)
 
     def multi_delete(self):
         code, config_maps = self.list_configmaps()
