@@ -52,6 +52,8 @@ class ConfigMap(BASE):
         path = self.configmap_url.format(
                 project_id=self.project_id, configmap_id=id)
         ret = self.req(method="delete", path=path, body=None)
+        
+        print ret.status_code, json.loads(ret.content) if ret.content else None
         return ret.status_code, json.loads(ret.content) if ret.content else None
 
     def list_configmaps(self):
@@ -73,15 +75,8 @@ class ConfigMap(BASE):
         for id in id_list:
             t = threading.Thread(target=self.delete_configmap, args=(id,))
             t.start()
+            time.sleep(0.3)
             t.join(timeout=5)
-
-    def multi_delete(self):
-        code, config_maps = self.list_configmaps()
-        assert code == 200
-        id_list = [configmap["id"] for configmap in config_maps["configmaps"] if "qwq-0422" in configmap["name"]]
-        for id in id_list:
-            t = threading.Thread(target=self.delete_configmap, args=(id,))
-            t.start()
 
 
 if __name__ == '__main__':

@@ -68,7 +68,7 @@ if __name__ == '__main__':
             client.multi_delete()
 
             client.multi_post()
-
+            print "0"*100
             deployment.put_deployment_with_configmap(id="35c8e0f5-286a-4d17-b148-6b944c40f920")
 
 
