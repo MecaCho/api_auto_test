@@ -61,7 +61,11 @@ if __name__ == '__main__':
             #client = node.Node(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
             client = configs.ConfigMap(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
             #client.list_nodes()
-            code, config_json = client.create_configmap(name="test_1234")
+            client.multi_delete() 
+            time.sleep(1)
+            client.multi_post() 
+            code, config_json = client.create_configmap(name="test-1234")
+            print code, config_json
             assert code == 201
             print str(config_json)
             #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
