@@ -6,7 +6,7 @@ import logging
 import time
 
 from log.log import return_api_resp
-from module import tag, node
+from module import tag, node, configs
 
 # logging.basicConfig(level=logging.INFO,filename="report.html", format='<tr bordercolor="Blue" align="left"><td>%(message)s</td></tr>')
 logging.basicConfig(level=logging.INFO, filename="report.html", format="%(message)s")
@@ -58,13 +58,15 @@ if __name__ == '__main__':
 
             LOG.info(
                 '<tr bordercolor="Blue" align="left"><td width="100">method</td><td width="300">path</td><td width="100">cost_time(s)</td><td width="100">resp_code</td><td width="100">expect_code</td><td width="100">Result</td><td width="400">body</td></tr>')
-            client = node.Node(
-                    usr=usr, pwd=pwd, project_id=project_id,
-                    url=url, api_version=api_version)
-            client.list_nodes()
-            #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
-            code, node_json = client.create_node(name="qwq-test-node")
+            #client = node.Node(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
+            client = configs.ConfigMap(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
+            #client.list_nodes()
+            code, config_json = client.create_configmap(name="test_1234")
             assert code == 201
+            print str(config_json)
+            #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
+            #code, node_json = client.create_node(name="qwq-test-node")
+            #assert code == 201
             #with open("qwq-test-node1553566682.json", "r") as fp:
             #    node_json = json.load(fp)
             #print str(node_json)

@@ -20,6 +20,9 @@ NODE = "/{project_id}/edgemgr/nodes/{node_id}"
 NODE_CERTS = "/{project_id}/edgemgr/nodes/{node_id}/certs"
 NODE_CERT = "/{project_id}/edgemgr/nodes/{node_id}/certs/{cert_id}"
 
+CONFIGMAPS = "/{project_id}/edgemgr/configmaps"
+CONFIGMAP = "/{project_id}/edgemgr/configmaps/{configmap_id}"
+
 QUERY_INS = "/{project_id}/ief-{resource_type}/resource_instances/action"
 ADD_TAG = "/{project_id}/ief-{resource_type}/{resource_id}/tags"
 DEL_TAG = "/{project_id}/ief-{resource_type}/{resource_id}/tags/{key}"
@@ -43,6 +46,9 @@ class BASE(object):
         self.url_node = NODE
         self.node_certs = NODE_CERTS
         self.node_cert = NODE_CERT
+
+        self.configmaps_url = CONFIGMAPS
+        self.configmap_url = CONFIGMAP
         self.url_query_ins_by_tag = QUERY_INS
         self.url_add_tag = ADD_TAG
         self.url_tags = ADD_TAG
