@@ -52,17 +52,23 @@ if __name__ == '__main__':
             with open("report.html", "w") as fp:
                 fp.write("")
             api_version = region["api_version"]
-            LOG.info('<h1 class="center"<nobr>IEF {} API Auto Test Result Report ({})</nobr></h1>'.format(t_case_name, url))
+            LOG.info(
+                    '<h1 class="center"<nobr>IEF {} API Auto Test Result Report ({})</nobr></h1>'.format(
+                    t_case_name, url))
             LOG.info('<table bordercolor="Blue" width="1200" align="left" cellspacing="0" border="1">')
             LOG.info('<style>table { table-layout:fixed; word-wrap: break-word;}</style>')
 
             LOG.info(
-                '<tr bordercolor="Blue" align="left"><td width="100">method</td><td width="300">path</td><td width="100">cost_time(s)</td><td width="100">resp_code</td><td width="100">expect_code</td><td width="100">Result</td><td width="400">body</td></tr>')
+                '<tr bordercolor="Blue" align="left"><td width="100">method</td><td width="300">path</td>'
+                '<td width="100">cost_time(s)</td><td width="100">resp_code</td><td width="100">expect_code</td>'
+                '<td width="100">Result</td><td width="400">body</td></tr>')
             #client = node.Node(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
-            client = configs.ConfigMap(usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
+            client = configs.ConfigMap(
+                    usr=usr, pwd=pwd, project_id=project_id,url=url, api_version=api_version)
             #client.list_nodes()
 
-            deployment = deployment.Deployment(usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
+            deployment = deployment.Deployment(
+                    usr=usr, pwd=pwd, project_id=project_id, url=url, api_version=api_version)
             deployment.put_deployment(id="35c8e0f5-286a-4d17-b148-6b944c40f920")
 
             client.multi_delete()
