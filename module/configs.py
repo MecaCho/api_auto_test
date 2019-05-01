@@ -71,8 +71,10 @@ class ConfigMap(BASE):
     def multi_delete(self):
         code, config_maps = self.list_configmaps()
         assert code == 200
-        id_list = [configmap["id"] for configmap in config_maps["configmaps"] if "qwq-0422" in configmap["name"]]
-        for id in id_list:
+        id_list = [{"id": configmap["id"], "name":configmap["name"]} for configmap in config_maps["configmaps"] if "qwq-0422" in configmap["name"]]
+        for c_dict in id_list:
+            id = c_dict["id"]
+            print "Delete configmap : {}".format(c_dict["name"])
             t = threading.Thread(target=self.delete_configmap, args=(id,))
             t.start()
             time.sleep(0.3)

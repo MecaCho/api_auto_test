@@ -76,8 +76,19 @@ if __name__ == '__main__':
             client.multi_post()
             print "0"*100
             deployment.put_deployment_with_configmap(id="35c8e0f5-286a-4d17-b148-6b944c40f920")
-
-
+            for i in xrange(100):
+            
+                code, deployment_json = deployment.get_deployment(id="35c8e0f5-286a-4d17-b148-6b944c40f920")
+                state = deployment_json["deployment"]["instances"][0]["state"]
+                print "Get state:                    ", state
+                if state == "RUNNING":
+                    break
+                time.sleep(6)
+            
+            if i == 99:
+                print "Found TimeOut"
+            else:
+                print i, "put deployment configmap sucessfully."
 
             #LOG.info('<td colspan="7">{}</td>'.format("Created a node."))
             #code, node_json = client.create_node(name="qwq-test-node")
