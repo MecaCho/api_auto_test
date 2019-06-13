@@ -29,6 +29,26 @@ class Node(BASE):
         self.pwd = pwd
         self.usr = usr
 
+    def node_bind_dev(self, node_id, device_id):
+
+        # node = self.get_node(node_id)
+
+        path = self.node_device.format(project_id=self.project_id, node_id=node_id)
+
+        bind_body = {
+                "devices": {
+                    "added": {
+                        "relation": "bounding_camera",
+                        "comment": "test_comment.",
+                        "device_ids": [
+                            device_id
+                        ]
+                    }
+                }
+        }
+        ret = self.req(method="put", path=path, body=bind_body)
+        return ret.status_code, json.loads(ret.content)
+
     def init_node(self, node_json=None):
         #     在您的设备上链接华为边缘计算服务，需要执行以下步骤：
         #        1) 请在安装installer之前先安装docker

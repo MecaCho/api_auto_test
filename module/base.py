@@ -20,6 +20,8 @@ NODE = "/{project_id}/edgemgr/nodes/{node_id}"
 NODE_CERTS = "/{project_id}/edgemgr/nodes/{node_id}/certs"
 NODE_CERT = "/{project_id}/edgemgr/nodes/{node_id}/certs/{cert_id}"
 
+NODE_DEVICE = "/{project_id}/edgemgr/nodes/{node_id}/devices"
+
 CONFIGMAPS = "/{project_id}/edgemgr/configmaps"
 CONFIGMAP = "/{project_id}/edgemgr/configmaps/{configmap_id}"
 
@@ -49,6 +51,8 @@ class BASE(object):
         self.url_node = NODE
         self.node_certs = NODE_CERTS
         self.node_cert = NODE_CERT
+
+        self.node_device = NODE_DEVICE
 
         self.configmaps_url = CONFIGMAPS
         self.configmap_url = CONFIGMAP
